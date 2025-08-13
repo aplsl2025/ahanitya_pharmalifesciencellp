@@ -134,11 +134,43 @@
 
   <form action="https://formsubmit.co/infoahanityapharmalifescellp@gmail.com" method="POST" enctype="multipart/form-data">
   <input type="text" name="name" placeholder="Your Name" required />
-  <input type="text"Business name="name" placeholder="Your firm Name" required />
-  <input type="text"Business Type="name" placeholder="Stockist|Distributor|Retailer|Healthcare Professionals" required />
+
+  <input type="text" name="firmName" placeholder="Your Firm Name" required />
+
+  <label for="businessType">Business Type:</label>
+  <select name="businessType" id="businessType" required>
+    <option value="">-- Select Business Type --</option>
+    <option value="Stockist">Stockist</option>
+    <option value="Distributor">Distributor</option>
+    <option value="Retailer">Retailer</option>
+    <option value="Healthcare Professional">Healthcare Professional</option>
+    <option value="Hospital">Hospital</option>
+    <option value="Hospitals & Clinics">Hospitals & Clinics</option>
+    <option value="Nursing Homes & Elder Care Facilities">Nursing Homes & Elder Care Facilities</option>
+    <option value="Government Health Departments">Government Health Departments</option>
+    <option value="Medical Colleges & Universities">Medical Colleges & Universities</option>
+    <option value="NGOs & Health Foundations">NGOs & Health Foundations</option>
+    <option value="Corporate Wellness Programs">Corporate Wellness Programs</option>
+  </select>
+
   <input type="email" name="email" placeholder="Your Email" required />
+
   <input type="text" name="phone" placeholder="Your Phone Number" />
+
   <textarea name="message" rows="5" placeholder="Your Message" required></textarea>
+
+  <button type="submit">Submit</button>
+</form>
+
+
+  <input type="email" name="email" placeholder="Your Email" required />
+
+  <input type="text" name="phone" placeholder="Your Phone Number" />
+
+  <textarea name="message" rows="5" placeholder="Your Message" required></textarea>
+
+  <button type="submit">Submit</button>
+</form>
 
   <!-- 📎 File Attachment -->
   <label for="attachment">Attach a file (PDF, DOC, JPG, PNG):</label>
@@ -170,6 +202,7 @@
 
 </body>
 </html>
+
 
 
 
