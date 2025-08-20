@@ -194,6 +194,176 @@
         <p>Delivering dermatologically trusted and research-driven formulations that combine innovation with care,
           helping individuals achieve healthy, radiant, and confident skin. </p>
       </div>
+      <!-- Card + Book Now -->
+<div class="card">
+  <h3>X-Ray at Your Home</h3>
+  <p>Book X-ray at your home with Ahanitya Pharma Life Science</p>
+  <button class="btn" id="openBooking">Book Now</button>
+</div>
+
+<!-- Modal -->
+<div class="modal" id="bookingModal" aria-hidden="true" role="dialog" aria-modal="true" aria-labelledby="bookingTitle">
+  <div class="modal__overlay" id="closeBooking"></div>
+  <div class="modal__content" role="document">
+    <button class="modal__close" id="xClose" aria-label="Close">×</button>
+    <h3 id="bookingTitle">Book an Appointment</h3>
+
+    <form
+      class="form"
+      action="https://formsubmit.co/REPLACE_WITH_YOUR_EMAIL"
+      method="POST"
+      onsubmit="return validateServiceArea()"
+      novalidate
+    >
+      <!-- FormSubmit (optional) helpers -->
+      <input type="hidden" name="_subject" value="New X-Ray Appointment Request">
+      <input type="hidden" name="_template" value="table">
+      <input type="hidden" name="_captcha" value="false">
+
+      <label>
+        Name
+        <input type="text" name="name" placeholder="Your full name" required>
+      </label>
+
+      <label>
+        Mail ID
+        <input type="email" name="email" placeholder="you@example.com" required>
+      </label>
+
+      <label>
+        Contact No
+        <input
+          type="tel"
+          name="phone"
+          placeholder="+91 98765 43210"
+          pattern="[\+0-9\s\-()]{8,}"
+          required
+          title="Enter a valid phone number"
+        >
+      </label>
+
+      <label>
+        Address
+        <textarea id="address" name="address" rows="3" placeholder="Street, Ahmedabad" required></textarea>
+      </label>
+
+      <label>
+        Select Time Slot
+        <select name="time_slot" required>
+          <option value="">-- Choose a time --</option>
+          <option>09:00–10:00</option>
+          <option>10:00–11:00</option>
+          <option>11:00–12:00</option>
+          <option>14:00–15:00</option>
+          <option>15:00–16:00</option>
+          <option>16:00–17:00</option>
+          <option>17:00–18:00</option>
+        </select>
+      </label>
+
+      <div class="actions">
+        <button type="button" class="btn btn--ghost" id="cancelBooking">Cancel</button>
+        <button type="submit" class="btn">Submit</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- Styles -->
+<style>
+  :root{
+    --brand:#14532d; --bg:#f5f7fa; --text:#1f2937; --muted:#6b7280;
+    --card:#ffffff; --ring:rgba(20,83,45,.15);
+  }
+  .card{
+    background:var(--card);
+    border:1px solid #e5e7eb;
+    border-radius:16px;
+    padding:18px;
+    box-shadow:0 6px 20px rgba(0,0,0,.06);
+    max-width:640px;
+  }
+  .card h3{ margin:0 0 8px; color:var(--brand); }
+  .card p{ margin:0 0 14px; color:var(--text); }
+  .btn{
+    display:inline-flex; align-items:center; justify-content:center;
+    padding:10px 16px; border-radius:999px; border:0;
+    background:var(--brand); color:#fff; font-weight:600; cursor:pointer;
+    box-shadow:0 6px 16px var(--ring); transition:transform .05s ease;
+  }
+  .btn:active{ transform:translateY(1px); }
+  .btn.btn--ghost{
+    background:#fff; color:var(--brand); border:1px solid #d1d5db;
+  }
+
+  /* Modal */
+  .modal{ position:fixed; inset:0; display:none; }
+  .modal[aria-hidden="false"]{ display:block; }
+  .modal__overlay{
+    position:absolute; inset:0; background:rgba(0,0,0,.45);
+  }
+  .modal__content{
+    position:relative; max-width:560px; width:calc(100% - 24px);
+    margin:6vh auto; background:#fff; border-radius:20px;
+    padding:20px 18px; box-shadow:0 10px 30px rgba(0,0,0,.2);
+  }
+  .modal__close{
+    position:absolute; top:10px; right:12px; font-size:22px;
+    width:36px; height:36px; line-height:36px; text-align:center;
+    border-radius:999px; border:0; background:#f3f4f6; cursor:pointer;
+  }
+
+  /* Form */
+  .form{ display:grid; gap:12px; margin-top:8px; }
+  .form label{ display:grid; gap:6px; font-weight:600; color:var(--text); }
+  .form input, .form textarea, .form select{
+    width:100%; padding:10px 12px; border-radius:10px;
+    border:1px solid #d1d5db; outline:none; background:#fff; color:var(--text);
+  }
+  .form input:focus, .form textarea:focus, .form select:focus{
+    border-color:var(--brand); box-shadow:0 0 0 4px var(--ring);
+  }
+  .actions{ display:flex; gap:10px; justify-content:flex-end; margin-top:8px; }
+  @media (max-width:480px){
+    .modal__content{ margin:10vh auto; padding:18px 14px; }
+  }
+</style>
+
+<!-- Script -->
+<script>
+  (function(){
+    const openBtn = document.getElementById('openBooking');
+    const modal = document.getElementById('bookingModal');
+    const closeAreas = [document.getElementById('closeBooking'), document.getElementById('cancelBooking'), document.getElementById('xClose')];
+
+    function openModal(){
+      modal.setAttribute('aria-hidden','false');
+      const first = modal.querySelector('input, select, textarea, button');
+      if(first) setTimeout(()=> first.focus(), 50);
+      document.addEventListener('keydown', escClose);
+    }
+    function closeModal(){
+      modal.setAttribute('aria-hidden','true');
+      document.removeEventListener('keydown', escClose);
+      openBtn && openBtn.focus();
+    }
+    function escClose(e){ if(e.key === 'Escape') closeModal(); }
+
+    openBtn && openBtn.addEventListener('click', openModal);
+    closeAreas.forEach(el => el && el.addEventListener('click', closeModal));
+  })();
+
+  // Restrict service area to Ahmedabad
+  function validateServiceArea() {
+    const address = document.getElementById('address').value.toLowerCase();
+    if (!address.includes('ahmedabad')) {
+      alert('Sorry, our service is currently available only in Ahmedabad.');
+      return false;
+    }
+    return true;
+  }
+</script>
+
     </div>
     <div class="services-container">
     <div class="service-item">
@@ -283,6 +453,7 @@
 
 </body>
 </html>
+
 
 
 
