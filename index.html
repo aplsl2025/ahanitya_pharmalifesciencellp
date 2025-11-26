@@ -42,17 +42,35 @@
 
   
     footer { background: #11799a; color: #fff; text-align: center; padding: 20px; margin-top: 30px; }
-    /* NEW: Logo Card styles */
+    /* ✅ Logo Card – aligned with site width (NO other changes) */
     .logo-card {
-      background: #fff; border: 1px solid #e5e7eb; border-radius: 12px;
-      box-shadow: 0 6px 16px rgba(0,0,0,0.08); padding: 10px; text-align: center;
-      width: 1328px; max-width: 100%;
+      background: #fff;
+      border: 1px solid #e5e7eb;
+      border-radius: 12px;
+      box-shadow: 0 6px 16px rgba(0,0,0,0.08);
+
+      /* EXACT alignment with site sections */
+      max-width: 1000px;
+      width: calc(100% - 40px); /* matches section padding */
+      margin: 20px auto;
+
+      padding: 16px;
+      text-align: center;
       transition: transform .2s ease, box-shadow .2s ease;
     }
-    .logo-card:hover { transform: translateY(-3px); box-shadow: 0 10px 20px rgba(0,0,0,0.12); }
-    .logo-card img { max-width: 200px; height: auto; margin: 0 auto 12px; display: block; }
-    .logo-card h3 { margin: 0 0 6px; font-size: 2.05rem; color: #11799a; }
-    .logo-card p { margin: 0; font-size: .9rem; color: #555; }
+    .logo-card:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 10px 20px rgba(0,0,0,0.12);
+    }
+
+    /* Aspect‑ratio safe logo */
+    .logo-card img {
+      max-width: 220px;
+      height: auto;
+      object-fit: contain;
+      margin: 0 auto;
+      display: block;
+    }
   
     /* Filterable product gallery */
     .pg-filter-bar{
