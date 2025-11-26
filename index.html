@@ -118,6 +118,14 @@
       color:#11799a;
       font-size:0.9rem;
     }
+
+/* ✅ Text alignment fix (Vision, Mission, About Us ONLY) */
+.vision-section p,
+#about-us p {
+  text-align: justify;
+  line-height: 1.7;
+}
+
 </style>
 <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet"/></head>
 <body>
@@ -329,53 +337,56 @@
     <button class="pg-btn" data-category="cosmetics">Cosmetics &amp; Skin Care</button>
   </div>
 
-  <div class="pg-grid">
-    <!-- Medicines -->
-    <div class="pg-item" data-category="medicines">
-      <img src="assets/images/ASP.jpg" alt="ASP-15">
-      <p>Medicines (Rx &amp; OTC) – Product 1</p>
-    </div>
-    <div class="pg-item" data-category="medicines">
-      <img src="assets/images/A SUNAC.png" alt="A SUNAC">
-      <p>Medicines (Rx &amp; OTC) – Product 2</p>
-    </div>
-    <div class="pg-item" data-category="medicines">
-      <img src="assets/images/PANTO-DSR.png" alt="PANTO DSR">
-      <p>Medicines (Rx &amp; OTC) – Product 3</p>
-    </div>
-    <div class="pg-item" data-category="medicines">
-      <img src="assets/images/AZIN-500.png" alt="AZIN-500">
-      <p>Medicines (Rx &amp; OTC) – Product 4</p>
-    </div>
+  <!-- Scrollable wrapper for Product Gallery (up–down scroll) -->
+  <div style="max-height:500px; overflow-y:auto; padding-right:4px;">
+    <div class="pg-grid">
+      <!-- Medicines -->
+      <div class="pg-item" data-category="medicines">
+        <img src="assets/images/ASP.jpg" alt="ASP-15">
+        <p>Medicines (Rx &amp; OTC) – Product 1</p>
+      </div>
+      <div class="pg-item" data-category="medicines">
+        <img src="assets/images/A SUNAC.png" alt="A SUNAC">
+        <p>Medicines (Rx &amp; OTC) – Product 2</p>
+      </div>
+      <div class="pg-item" data-category="medicines">
+        <img src="assets/images/PANTO-DSR.png" alt="PANTO DSR">
+        <p>Medicines (Rx &amp; OTC) – Product 3</p>
+      </div>
+      <div class="pg-item" data-category="medicines">
+        <img src="assets/images/AZIN-500.png" alt="AZIN-500">
+        <p>Medicines (Rx &amp; OTC) – Product 4</p>
+      </div>
 
-    <!-- Ayurvedic -->
-    <div class="pg-item" data-category="ayurvedic">
-      <img src="assets/images/Ayurved -bg.png" alt="Ayurvedic &amp; Herbal Product 1">
-      <p>Ayurvedic &amp; Herbal – Product 1</p>
-    </div>
-    <div class="pg-item" data-category="ayurvedic">
-      <img src="assets/images/cosmatic-bg.png" alt="Ayurvedic &amp; Herbal Product 2">
-      <p>Ayurvedic &amp; Herbal – Product 2</p>
-    </div>
+      <!-- Ayurvedic -->
+      <div class="pg-item" data-category="ayurvedic">
+        <img src="assets/images/Ayurved -bg.png" alt="Ayurvedic &amp; Herbal Product 1">
+        <p>Ayurvedic &amp; Herbal – Product 1</p>
+      </div>
+      <div class="pg-item" data-category="ayurvedic">
+        <img src="assets/images/cosmatic-bg.png" alt="Ayurvedic &amp; Herbal Product 2">
+        <p>Ayurvedic &amp; Herbal – Product 2</p>
+      </div>
 
-    <!-- Devices -->
-    <div class="pg-item" data-category="devices">
-      <img src="assets/images/medical device-bg.png" alt="Medical Devices Product 1">
-      <p>Medical Devices – Product 1</p>
-    </div>
-    <div class="pg-item" data-category="devices">
-      <img src="assets/images/products/devices.jpg" alt="Medical Devices Product 2">
-      <p>Medical Devices – Product 2</p>
-    </div>
+      <!-- Devices -->
+      <div class="pg-item" data-category="devices">
+        <img src="assets/images/medical device-bg.png" alt="Medical Devices Product 1">
+        <p>Medical Devices – Product 1</p>
+      </div>
+      <div class="pg-item" data-category="devices">
+        <img src="assets/images/products/devices.jpg" alt="Medical Devices Product 2">
+        <p>Medical Devices – Product 2</p>
+      </div>
 
-    <!-- Cosmetics -->
-    <div class="pg-item" data-category="cosmetics">
-      <img src="assets/images/products/cosmetics.jpg" alt="Cosmetics &amp; Skin Care Product 1">
-      <p>Cosmetics &amp; Skin Care – Product 1</p>
-    </div>
-    <div class="pg-item" data-category="cosmetics">
-      <img src="assets/images/products/cosmetics.jpg" alt="Cosmetics &amp; Skin Care Product 2">
-      <p>Cosmetics &amp; Skin Care – Product 2</p>
+      <!-- Cosmetics -->
+      <div class="pg-item" data-category="cosmetics">
+        <img src="assets/images/products/cosmetics.jpg" alt="Cosmetics &amp; Skin Care Product 1">
+        <p>Cosmetics &amp; Skin Care – Product 1</p>
+      </div>
+      <div class="pg-item" data-category="cosmetics">
+        <img src="assets/images/products/cosmetics.jpg" alt="Cosmetics &amp; Skin Care Product 2">
+        <p>Cosmetics &amp; Skin Care – Product 2</p>
+      </div>
     </div>
   </div>
 </section>
