@@ -63,7 +63,7 @@
       box-shadow: 0 10px 20px rgba(0,0,0,0.12);
     }
 
-    /* Aspect‑ratio safe logo */
+    /* Aspect-ratio safe logo */
     .logo-card img {
       max-width: 220px;
       height: auto;
@@ -106,11 +106,21 @@
       padding:10px;
       text-align:center;
     }
+    /* ✅ support multiple clickable images per product */
+    .pg-item a{
+      display:block;
+      margin-bottom:6px;
+    }
     .pg-item img{
       width:100%;
       height:180px;
       object-fit:cover;
       border-radius:8px;
+      cursor:pointer;
+      transition:transform 0.2s ease;
+    }
+    .pg-item img:hover{
+      transform:scale(1.03);
     }
     .pg-item p{
       margin-top:8px;
@@ -341,7 +351,7 @@
 <section id="product-gallery" style="padding:40px 20px; max-width:1100px; margin:40px auto;">
   <h2 style="text-align:center; color:#11799a;">Product Gallery</h2>
   <p style="text-align:center; max-width:700px; margin:0 auto 10px; color:#555; font-size:0.95rem;">
-    Filter by category to view multiple product images.
+    Filter by category to view multiple product images. Click any image to open it in a new tab.
   </p>
   <div class="pg-filter-bar">
     <button class="pg-btn active" data-category="all">All</button>
@@ -356,49 +366,77 @@
     <div class="pg-grid">
       <!-- Medicines -->
       <div class="pg-item" data-category="medicines">
-        <img src="assets/images/ASP.jpg" alt="ASP-15">
-        <p>Medicines (Rx &amp; OTC) – Product 1</p>
+        <!-- ✅ Demo: multiple images for same product (replace with your own files later) -->
+        <a href="assets/images/ASP.jpg" target="_blank">
+          <img src="assets/images/ASP.jpg" alt="ASP-15 Front Pack">
+        </a>
+        <a href="assets/images/ASP.jpg" target="_blank">
+          <img src="assets/images/ASP.jpg" alt="ASP-15 Back Pack">
+        </a>
+        <a href="assets/images/ASP.jpg" target="_blank">
+          <img src="assets/images/ASP.jpg" alt="ASP-15 Strip">
+        </a>
+        <p>ASP-15 – Front / Back / Strip</p>
       </div>
+
       <div class="pg-item" data-category="medicines">
-        <img src="assets/images/A SUNAC.png" alt="A SUNAC">
+        <a href="assets/images/A SUNAC.png" target="_blank">
+          <img src="assets/images/A SUNAC.png" alt="A SUNAC">
+        </a>
         <p>Medicines (Rx &amp; OTC) – Product 2</p>
       </div>
       <div class="pg-item" data-category="medicines">
-        <img src="assets/images/PANTO-DSR.png" alt="PANTO DSR">
+        <a href="assets/images/PANTO-DSR.png" target="_blank">
+          <img src="assets/images/PANTO-DSR.png" alt="PANTO DSR">
+        </a>
         <p>Medicines (Rx &amp; OTC) – Product 3</p>
       </div>
       <div class="pg-item" data-category="medicines">
-        <img src="assets/images/AZIN-500.png" alt="AZIN-500">
+        <a href="assets/images/AZIN-500.png" target="_blank">
+          <img src="assets/images/AZIN-500.png" alt="AZIN-500">
+        </a>
         <p>Medicines (Rx &amp; OTC) – Product 4</p>
       </div>
 
       <!-- Ayurvedic -->
       <div class="pg-item" data-category="ayurvedic">
-        <img src="assets/images/Ayurved -bg.png" alt="Ayurvedic &amp; Herbal Product 1">
+        <a href="assets/images/Ayurved -bg.png" target="_blank">
+          <img src="assets/images/Ayurved -bg.png" alt="Ayurvedic &amp; Herbal Product 1">
+        </a>
         <p>Ayurvedic &amp; Herbal – Product 1</p>
       </div>
       <div class="pg-item" data-category="ayurvedic">
-        <img src="assets/images/cosmatic-bg.png" alt="Ayurvedic &amp; Herbal Product 2">
+        <a href="assets/images/cosmatic-bg.png" target="_blank">
+          <img src="assets/images/cosmatic-bg.png" alt="Ayurvedic &amp; Herbal Product 2">
+        </a>
         <p>Ayurvedic &amp; Herbal – Product 2</p>
       </div>
 
       <!-- Devices -->
       <div class="pg-item" data-category="devices">
-        <img src="assets/images/medical device-bg.png" alt="Medical Devices Product 1">
+        <a href="assets/images/medical device-bg.png" target="_blank">
+          <img src="assets/images/medical device-bg.png" alt="Medical Devices Product 1">
+        </a>
         <p>Medical Devices – Product 1</p>
       </div>
       <div class="pg-item" data-category="devices">
-        <img src="assets/images/products/devices.jpg" alt="Medical Devices Product 2">
+        <a href="assets/images/products/devices.jpg" target="_blank">
+          <img src="assets/images/products/devices.jpg" alt="Medical Devices Product 2">
+        </a>
         <p>Medical Devices – Product 2</p>
       </div>
 
       <!-- Cosmetics -->
       <div class="pg-item" data-category="cosmetics">
-        <img src="assets/images/products/cosmetics.jpg" alt="Cosmetics &amp; Skin Care Product 1">
+        <a href="assets/images/products/cosmetics.jpg" target="_blank">
+          <img src="assets/images/products/cosmetics.jpg" alt="Cosmetics &amp; Skin Care Product 1">
+        </a>
         <p>Cosmetics &amp; Skin Care – Product 1</p>
       </div>
       <div class="pg-item" data-category="cosmetics">
-        <img src="assets/images/products/cosmetics.jpg" alt="Cosmetics &amp; Skin Care Product 2">
+        <a href="assets/images/products/cosmetics.jpg" target="_blank">
+          <img src="assets/images/products/cosmetics.jpg" alt="Cosmetics &amp; Skin Care Product 2">
+        </a>
         <p>Cosmetics &amp; Skin Care – Product 2</p>
       </div>
     </div>
@@ -751,6 +789,16 @@ document.getElementById("year").textContent = new Date().getFullYear();
   })();
 </script>
 
+<script>
+const appointmentDate = document.getElementById('appointment_date');
+if (appointmentDate) {
+  const today = new Date();
+  const yyyy = today.getFullYear();
+  const mm = String(today.getMonth() + 1).padStart(2, '0');
+  const dd = String(today.getDate()).padStart(2, '0');
+  appointmentDate.min = `${yyyy}-${mm}-${dd}`;
+}
+</script>
+
 </body>
 </html>
-
