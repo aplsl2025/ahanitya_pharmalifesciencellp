@@ -690,6 +690,35 @@
   <p>© <span id="year"></span> Ahanitya Pharma Life Science LLP. All Rights Reserved.</p>
 </footer>
 
+
+<!-- Image Lightbox (click any product image to view in high resolution) -->
+<div id="imgLightbox" style="
+  display:none;
+  position:fixed;
+  inset:0;
+  background:rgba(0,0,0,0.85);
+  z-index:9999;
+  align-items:center;
+  justify-content:center;
+">
+  <span id="imgClose" style="
+    position:absolute;
+    top:20px;
+    right:30px;
+    font-size:34px;
+    color:#fff;
+    cursor:pointer;
+  ">&times;</span>
+
+  <img id="lightboxImg" src="" style="
+    max-width:95%;
+    max-height:95%;
+    object-fit:contain;
+    box-shadow:0 0 20px rgba(255,255,255,0.3);
+    border-radius:8px;
+  ">
+</div>
+
 <style>
 .footer {
   color: #fff;
@@ -747,6 +776,50 @@ document.getElementById("year").textContent = new Date().getFullYear();
           }
         });
       });
+    });
+  })();
+</script>
+
+
+<script>
+  // High-resolution image lightbox for Product Gallery
+  (function() {
+    var lightbox = document.getElementById('imgLightbox');
+    var lightboxImg = document.getElementById('lightboxImg');
+    var closeBtn = document.getElementById('imgClose');
+
+    if (!lightbox || !lightboxImg) return;
+
+    // Attach click handler to all product gallery images
+    document.querySelectorAll('.pg-item img').forEach(function(img) {
+      img.addEventListener('click', function() {
+        lightboxImg.src = img.src;
+        lightbox.style.display = 'flex';
+        document.body.style.overflow = 'hidden';
+      });
+    });
+
+    function closeLightbox() {
+      lightbox.style.display = 'none';
+      document.body.style.overflow = '';
+    }
+
+    if (closeBtn) {
+      closeBtn.addEventListener('click', closeLightbox);
+    }
+
+    // Close when clicking on dark overlay (but not on the image itself)
+    lightbox.addEventListener('click', function(e) {
+      if (e.target === lightbox) {
+        closeLightbox();
+      }
+    });
+
+    // Close on ESC key
+    document.addEventListener('keydown', function(e) {
+      if (e.key === 'Escape') {
+        closeLightbox();
+      }
     });
   })();
 </script>
