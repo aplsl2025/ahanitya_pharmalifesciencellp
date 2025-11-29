@@ -140,45 +140,6 @@
   line-height: 1.7;
 }
 
-
-/* ✅ Pharma News styles (does not touch existing classes) */
-#pharma-news {
-  max-width: 1000px;
-  margin: 40px auto;
-}
-.pharma-news-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-  gap: 16px;
-}
-.pharma-news-card {
-  background: #ffffff;
-  border-radius: 10px;
-  border: 1px solid #e5e7eb;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.06);
-  padding: 12px 14px;
-}
-.pharma-news-card h3 {
-  font-size: 15px;
-  margin: 0 0 6px;
-}
-.pharma-news-card h3 a {
-  color: #11799a;
-  text-decoration: none;
-}
-.pharma-news-card h3 a:hover {
-  text-decoration: underline;
-}
-.pharma-news-card small {
-  color: #6b7280;
-  font-size: 12px;
-}
-.pharma-news-card p {
-  margin-top: 8px;
-  font-size: 13px;
-  color: #374151;
-}
-
 </style>
 <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet"/></head>
 <body>
@@ -375,19 +336,6 @@
 </div>
 </section>
 </section>
-
-
-<!-- ✅ Live Pharma News section (RSS based) -->
-<section id="pharma-news">
-  <h2 style="text-align:center; color:#11799a;">Latest Pharma News</h2>
-  <p style="text-align:center; color:#555; font-size:0.95rem; margin-bottom:14px;">
-    Live updates from leading pharmaceutical news sources.
-  </p>
-  <div id="pharma-news-list">
-    <p style="text-align:center; color:#6b7280;">Loading latest pharma updates...</p>
-  </div>
-</section>
-
 
 <!-- PRODUCT GALLERY SECTION -->
 <section id="product-gallery" style="padding:40px 20px; max-width:1100px; margin:40px auto;">
@@ -802,62 +750,6 @@ document.getElementById("year").textContent = new Date().getFullYear();
     });
   })();
 </script>
-
-
-<!-- ✅ Live RSS fetch for pharma news -->
-<script>
-(function () {
-  var container = document.getElementById('pharma-news-list');
-  if (!container) return;
-
-  // Pharma RSS feed
-  var PHARMA_RSS_URL = 'https://pharmabiz.com/RssFeed1.aspx?m=1';
-  var RSS_API = 'https://api.rss2json.com/v1/api.json?rss_url=' + encodeURIComponent(PHARMA_RSS_URL);
-
-  fetch(RSS_API)
-    .then(function (response) { return response.json(); })
-    .then(function (data) {
-      if (!data || !data.items || !data.items.length) {
-        container.innerHTML = '<p style="text-align:center; color:#6b7280;">No pharma news available right now.</p>';
-        return;
-      }
-
-      container.innerHTML = '';
-      var grid = document.createElement('div');
-      grid.className = 'pharma-news-grid';
-
-      data.items.slice(0, 6).forEach(function (item) {
-        var card = document.createElement('div');
-        card.className = 'pharma-news-card';
-
-        var pubDate = item.pubDate ? new Date(item.pubDate) : null;
-        var dateText = pubDate ? pubDate.toLocaleDateString() : '';
-
-        var desc = item.description || '';
-        // Strip HTML from description and trim
-        desc = desc.replace(/<[^>]*>/g, '');
-        if (desc.length > 150) desc = desc.slice(0, 147) + '...';
-
-        card.innerHTML =
-          '<h3><a href="' + item.link + '" target="_blank" rel="noopener noreferrer">' +
-          item.title +
-          '</a></h3>' +
-          (dateText ? '<small>' + dateText + '</small>' : '') +
-          (desc ? '<p>' + desc + '</p>' : '');
-
-        grid.appendChild(card);
-      });
-
-      container.appendChild(grid);
-    })
-    .catch(function (err) {
-      console.error('Error loading pharma news:', err);
-      container.innerHTML =
-        '<p style="text-align:center; color:#b91c1c;">Unable to load pharma news at the moment. Please try again later.</p>';
-    });
-})();
-</script>
-
 
 </body>
 </html>
