@@ -20,7 +20,7 @@
 
     .hero {
       background: url('assets/images/hero-bg.png') center/cover no-repeat;
-      color: #000; padding: 80px 20px;	
+      color: #000; padding: 80px 20px;
       display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap;
     }
  
@@ -749,6 +749,70 @@ document.getElementById("year").textContent = new Date().getFullYear();
       });
     });
   })();
+</script>
+
+
+<!-- ✅ IMAGE LIGHTBOX (AUTO for all gallery images) -->
+<div id="imgLightbox" style="
+  display:none;
+  position:fixed;
+  inset:0;
+  background:rgba(0,0,0,0.85);
+  z-index:9999;
+  align-items:center;
+  justify-content:center;
+">
+  <span id="imgClose" style="
+    position:absolute;
+    top:20px;
+    right:30px;
+    font-size:36px;
+    color:#fff;
+    cursor:pointer;
+  ">&times;</span>
+
+  <img id="lightboxImg" src="" style="
+    max-width:95%;
+    max-height:95%;
+    object-fit:contain;
+    border-radius:10px;
+    box-shadow:0 0 30px rgba(255,255,255,0.25);
+  ">
+</div>
+
+<script>
+/* ✅ High‑Resolution Image Lightbox */
+(function () {
+  const lightbox = document.getElementById('imgLightbox');
+  const lightboxImg = document.getElementById('lightboxImg');
+  const closeBtn = document.getElementById('imgClose');
+
+  if (!lightbox || !lightboxImg) return;
+
+  document.querySelectorAll('.pg-item img').forEach(img => {
+    img.style.cursor = 'zoom-in';
+    img.addEventListener('click', () => {
+      lightboxImg.src = img.src;
+      lightbox.style.display = 'flex';
+      document.body.style.overflow = 'hidden';
+    });
+  });
+
+  function closeLightbox() {
+    lightbox.style.display = 'none';
+    document.body.style.overflow = '';
+  }
+
+  closeBtn.addEventListener('click', closeLightbox);
+
+  lightbox.addEventListener('click', (e) => {
+    if (e.target === lightbox) closeLightbox();
+  });
+
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') closeLightbox();
+  });
+})();
 </script>
 
 </body>
