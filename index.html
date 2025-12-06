@@ -14,6 +14,31 @@
       display: flex; justify-content: space-between; align-items: center;
       position: sticky; top: 0; z-index: 100;
     }
+    .site-title{
+  display:flex;
+  flex-direction:column;
+  line-height:1.2;
+}
+  .site-title h1{
+  margin:0;
+  font-size:1.4rem;
+}   
+    .site-title h2{
+  margin:4px 0 0;
+  font-size:0.85rem;
+  font-weight:normal;
+  opacity:0.9;
+}
+
+nav a{
+  color:#fff;
+  text-decoration:none;
+  margin-left:15px;
+  font-weight:bold;
+}
+
+nav a:hover{ text-decoration:underline; }
+    
     header h1 { margin: 0; font-size: 1.4rem; }
     nav a { color: #fff; text-decoration: none; margin-left: 15px; font-weight: bold; }
     nav a:hover { text-decoration: underline; }
@@ -818,6 +843,7 @@ document.getElementById("year").textContent = new Date().getFullYear();
 
 </body>
 </html>
+
 
 
 
