@@ -1,872 +1,837 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="utf-8"/>
-<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
-<title>Ahanitya Pharma Life Science LLP</title>
-<meta content="Wholesale, Branding, Distribution &amp; Supply of medicines, ayurvedic, injectables, medical equipment &amp; supplies." name="description"/>
-<style>
-    html { scroll-behavior: smooth; }
-     
-    body { font-family: Arial, sans-serif; margin: 0;background: #f5f7fa; color: #333;}
-    header {
-      background: #11799a; color: #fff; padding: 15px 20px;  
-      display: flex; justify-content: space-between; align-items: center;
-      position: sticky; top: 0; z-index: 100;
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>Ahanitya Inventory Web App</title>
+  <style>
+    :root{
+      --brand:#11799a;
+      --brand2:#0f5f79;
+      --bg:#f5f7fb;
+      --card:#ffffff;
+      --text:#0f172a;
+      --muted:#64748b;
+      --danger:#dc2626;
+      --ok:#16a34a;
+      --shadow: 0 10px 25px rgba(2, 6, 23, .08);
+      --radius:16px;
     }
-    header h1 { margin: 0; font-size: 1.4rem; }
-
-    .site-title{
-      display:flex;
-      flex-direction:column;
-      line-height:1.2;
+    *{box-sizing:border-box}
+    body{
+      margin:0; font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+      background:linear-gradient(180deg, #eaf5f8 0%, var(--bg) 55%);
+      color:var(--text);
     }
-    .site-title h1{
-      margin:0;
-      font-size:1.4rem;
+    header{
+      position:sticky; top:0; z-index:10;
+      background:rgba(255,255,255,.7);
+      backdrop-filter: blur(10px);
+      border-bottom:1px solid rgba(15,23,42,.08);
     }
-    .site-title h2{
-      margin:4px 0 0;
-      font-size:0.85rem;
-      font-weight:normal;
-      opacity:0.9;
+    .wrap{max-width:1100px; margin:0 auto; padding:16px}
+    .topbar{
+      display:flex; align-items:center; gap:12px; justify-content:space-between;
     }
-
-    nav a { color: #fff; text-decoration: none; margin-left: 15px; font-weight: bold; }
-    nav a:hover { text-decoration: underline; }
-
-    .hero {
-      background: url('assets/images/hero-bg.png') center/cover no-repeat;
-      color: #000; padding: 80px 20px;
-      display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap;
+    .brand{
+      display:flex; align-items:center; gap:10px;
+      font-weight:800; letter-spacing:.2px;
     }
- 
-    .hero-text { max-width: 1000px; }
-    .hero h2 { font-size: 2.5rem; margin-bottom: 10px; }
-    .hero p { font-size: 1.2rem; max-width: 1000px; }
-    .hero-buttons { display: flex; flex-direction: column; gap: 12px; margin-top: 20px; }
-    .btn {
-      background: #22c55e; color: #fff; padding: 12px 20px; border: 0; border-radius: 6px;
-      font-weight: bold; text-decoration: none; text-align: center; display: inline-block;
+    .logo{
+      width:38px; height:38px; border-radius:12px;
+      background: radial-gradient(circle at 30% 30%, #41c7df, var(--brand));
+      box-shadow: var(--shadow);
     }
-    .btn:hover { background: #16a34a; }
-
-    section { padding: 40px 20px; max-width: 1000px; margin: auto; }
-    .cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 20px; }
-    .card { background: #fff; padding: 20px; border-radius: 8px; box-shadow: 0 2px 6px rgba(0,0,0,0.1); }
-    input, textarea { width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 6px; font-size: 1rem; }
-    button[type="submit"] { cursor: pointer; }
-
-  
-    footer { background: #11799a; color: #fff; text-align: center; padding: 20px; margin-top: 30px; }
-    /* ✅ Logo Card – aligned with site width (NO other changes) */
-    .logo-card {
-      background: #fff;
-      border: 1px solid #e5e7eb;
-      border-radius: 12px;
-      box-shadow: 0 6px 16px rgba(0,0,0,0.08);
-
-      /* EXACT alignment with site sections */
-      max-width: 1000px;
-      width: calc(100% - 40px); /* matches section padding */
-      margin: 20px auto;
-
-      padding: 16px;
-      text-align: center;
-      transition: transform .2s ease, box-shadow .2s ease;
-    }
-    .logo-card:hover {
-      transform: translateY(-3px);
-      box-shadow: 0 10px 20px rgba(0,0,0,0.12);
-    }
-
-    /* Aspect‑ratio safe logo */
-    .logo-card img {
-      max-width: 220px;
-      height: auto;
-      object-fit: contain;
-      margin: 0 auto;
-      display: block;
-    }
-  
-    /* Filterable product gallery */
-    .pg-filter-bar{
-      display:flex;
-      justify-content:center;
-      flex-wrap:wrap;
-      gap:10px;
-      margin-top:15px;
-    }
-    .pg-btn{
-      padding:8px 14px;
-      border-radius:999px;
-      border:1px solid #d1d5db;
-      background:#ffffff;
-      cursor:pointer;
-      font-size:0.85rem;
-    }
-    .pg-btn.active{
-      background:#11799a;
-      color:#ffffff;
-      border-color:#11799a;
-    }
-    .pg-grid{
-      display:grid;
-      grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
-      gap:20px;
-      margin-top:20px;
-    }
-    .pg-item{
+    .pill{
+      display:inline-flex; align-items:center; gap:8px;
+      padding:8px 12px; border-radius:999px;
+      border:1px solid rgba(15,23,42,.10);
       background:#fff;
-      border-radius:12px;
-      box-shadow:0 4px 12px rgba(0,0,0,0.1);
-      padding:10px;
-      text-align:center;
+      color:var(--muted);
+      font-size:13px;
     }
-    .pg-item img{
+    .grid{
+      display:grid; grid-template-columns: 1.2fr .8fr; gap:16px;
+      margin-top:16px;
+    }
+    @media (max-width: 920px){
+      .grid{grid-template-columns:1fr}
+    }
+    .card{
+      background:var(--card); border-radius:var(--radius);
+      box-shadow: var(--shadow);
+      border:1px solid rgba(15,23,42,.07);
+      overflow:hidden;
+    }
+    .card h2{
+      margin:0; padding:16px 16px 0; font-size:18px;
+    }
+    .card p.sub{margin:6px 16px 16px; color:var(--muted); font-size:13px}
+    .content{padding:16px}
+    .row{display:grid; grid-template-columns:1fr 1fr; gap:12px}
+    @media (max-width:520px){ .row{grid-template-columns:1fr} }
+    label{display:block; font-size:12px; color:var(--muted); margin:0 0 6px}
+    input, select{
       width:100%;
-      height:180px;
-      object-fit:cover;
-      border-radius:8px;
+      padding:11px 12px;
+      border-radius:12px;
+      border:1px solid rgba(15,23,42,.14);
+      outline:none;
+      font-size:14px;
+      background:#fff;
     }
-    .pg-item p{
-      margin-top:8px;
-      font-weight:bold;
-      color:#11799a;
-      font-size:0.9rem;
+    input:focus, select:focus{border-color: rgba(17,121,154,.55); box-shadow: 0 0 0 4px rgba(17,121,154,.12)}
+    .btns{display:flex; gap:10px; flex-wrap:wrap; margin-top:12px}
+    button{
+      border:none; cursor:pointer;
+      padding:11px 14px; border-radius:12px;
+      font-weight:700; font-size:14px;
+    }
+    .btn-primary{background:var(--brand); color:#fff}
+    .btn-primary:hover{background:var(--brand2)}
+    .btn-ghost{
+      background:#fff; color:var(--text);
+      border:1px solid rgba(15,23,42,.14);
+    }
+    .btn-danger{background:var(--danger); color:#fff}
+    .btn-ok{background:var(--ok); color:#fff}
+    .note{
+      font-size:12px; color:var(--muted);
+      margin-top:10px; line-height:1.35;
     }
 
-/* ✅ Text alignment fix (Vision, Mission, About Us ONLY) */
-.vision-section p,
-#about-us p {
-  text-align: justify;
-  line-height: 1.7;
-}
+    .hidden{display:none !important}
+    .tabs{display:flex; gap:8px; padding:10px; border-bottom:1px solid rgba(15,23,42,.08); background:#fff}
+    .tab{
+      padding:9px 12px; border-radius:999px;
+      border:1px solid rgba(15,23,42,.12);
+      background:#fff; color:var(--muted);
+      font-weight:800; font-size:13px;
+    }
+    .tab.active{
+      border-color: rgba(17,121,154,.4);
+      background: rgba(17,121,154,.10);
+      color: var(--brand2);
+    }
 
-
-/* ✅ Align Distribution & Import–Export paragraphs ONLY */
-.service-item p {
-  text-align: justify;
-  line-height: 1.7;
-}
-
-
-/* ✅ Align Contact Us paragraphs ONLY */
-#contact p {
-  text-align: justify;
-  line-height: 1.7;
-}
-
-</style>
-<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet"/></head>
+    .tablewrap{overflow:auto; border-radius:14px; border:1px solid rgba(15,23,42,.10)}
+    table{width:100%; border-collapse:collapse; min-width:760px; background:#fff}
+    th, td{padding:10px 10px; border-bottom:1px solid rgba(15,23,42,.06); text-align:left; font-size:13px}
+    th{font-size:12px; color:var(--muted); background:rgba(2,6,23,.02)}
+    .chip{
+      display:inline-flex; align-items:center;
+      padding:5px 9px; border-radius:999px;
+      font-weight:800; font-size:12px;
+      border:1px solid rgba(15,23,42,.10);
+      background:#fff;
+    }
+    .chip.low{border-color: rgba(220,38,38,.35); background: rgba(220,38,38,.08); color: var(--danger)}
+    .chip.ok{border-color: rgba(22,163,74,.35); background: rgba(22,163,74,.08); color: var(--ok)}
+    .right{display:flex; justify-content:flex-end; gap:8px}
+    .small{padding:8px 10px; border-radius:10px; font-size:12px; font-weight:800}
+    .muted{color:var(--muted)}
+    .kpi{
+      display:grid; grid-template-columns:1fr 1fr 1fr; gap:10px; margin-top:10px;
+    }
+    @media (max-width:520px){ .kpi{grid-template-columns:1fr} }
+    .kpi .box{
+      padding:12px; border-radius:14px;
+      border:1px solid rgba(15,23,42,.08);
+      background:rgba(255,255,255,.75);
+    }
+    .kpi .n{font-size:18px; font-weight:900}
+    .kpi .t{font-size:12px; color:var(--muted); margin-top:2px}
+    footer{padding:24px 16px; color:var(--muted); font-size:12px; text-align:center}
+    .alert{
+      margin-top:10px;
+      padding:10px 12px;
+      border-radius:12px;
+      border:1px solid rgba(15,23,42,.12);
+      background:#fff;
+      font-size:13px;
+    }
+    .alert.ok{border-color: rgba(22,163,74,.35); background: rgba(22,163,74,.08); color: var(--ok)}
+    .alert.bad{border-color: rgba(220,38,38,.35); background: rgba(220,38,38,.08); color: var(--danger)}
+  </style>
+</head>
 <body>
-<!-- Header -->
 <header>
-  <div class="site-title">
-    <h1>Ahanitya Pharma Life Science LLP</h1>
-    <h2>(GSTIN 24ACIFA8023D1ZT)</h2>
+  <div class="wrap topbar">
+    <div class="brand">
+      <div class="logo"></div>
+      <div>
+        Ahanitya Inventory Web App
+        <div class="muted" style="font-weight:700; font-size:12px">User Login + Admin Inventory Update</div>
+      </div>
+    </div>
+    <div class="pill" id="sessionPill">Not logged in</div>
   </div>
-  <nav>
-<a href="#top">Home</a>
-<a href="#about-us">About Us</a>
-<a href="#Our Products">Our Products</a>
-<a href="#product-gallery">Product-Gallery</a>    
-<a href="#services">Services</a>
-<a href="#contact">Contact Us</a>
-</nav>
 </header>
 
-<!-- Hero Section -->
-<div class="hero" id="top">
-<div class="hero-text">
-<h2>Innovating Healthcare for a Better Tomorrow</h2>
-<p>Delivering innovative drug delivery systems, life-saving medicines, and advanced medical equipment with a commitment to excellence.</p>
-</div>
-<div class="hero-buttons">
-<a class="btn" href="#contact">Contact Us</a>
-</div>
-</div>
-
-<!-- Logo Card -->
-<div class="logo-card">
-<img alt="Ahanitya Pharma Life Science LLP Logo" src="assets/images/LOGO.png"/>
-</div>
-
-<!-- Vision & Mission -->
-<section class="vision-section">
-<h2>Our Vision</h2>
-<p><strong>To be a globally recognized leader in the pharmaceutical and life sciences industry, setting new benchmarks in research, manufacturing, and accessibility.</strong></p>
-<h2>Our Mission</h2>
-<p><strong>To revolutionize healthcare by developing and delivering innovative pharmaceutical solutions that ensure safety, efficacy, and accessibility for all.</strong></p>
-</section>
-
-<!-- About Us -->
-<section id="about-us">
-<h2>About Us</h2>
-<p>Ahanitya Pharma Life Science LLP is dedicated to delivering innovative, safe, and effective healthcare solutions. We specialize in the wholesale, branding, and distribution of medicines, Nutraceuticals, Ayurvedic remedies, Injectables, and Medical Supplies, ensuring quality and accessibility for all.</p>
-<p>Ahanitya Pharma Life Science LLP is a trusted partner in healthcare, offering premium medicines, nutraceuticals, and medical supplies. We work closely with manufacturers, healthcare providers and partners to ensure excellence in service and delivery.</p>
-</section>
-
-<!-- Products -->
-<section id="Our Products">
-<h2>Our Products</h2>
-<div class="cards">
-<div class="card">
-<h3>Medicines (Rx &amp; OTC)</h3>
-<p>Effective and fast-acting medicines for a wide range of infections.</p>
-<a class="btn" download="" href="Images/Medicines (Rx &amp; OTC).jpg">Download Product List</a>
-</div>
-<div class="card">
-<h3>Ayurvedic &amp; Herbal</h3>
-<p>Natural remedies formulated with traditional herbs and modern science.</p>
-<a class="btn" download="" href="Images/Ayurvedic &amp; Herbal.jpg">Download Product List</a>
-</div>
-<div class="card">
-<h3>Medical Devices</h3>
-<p>Precision-engineered devices for diagnostics and patient care.</p>
-<a class="btn" download="" href="Images/medical_devices.jpg">Download Product List</a>
-</div>
-<div class="card">
-<h3>Cosmetics &amp; Skin Care</h3>
-<p>Confidence Starts with Care.</p>
-<a class="btn" download="" href="Images/Cosmetics &amp; Skin Care.jpg">Download Product List</a>
-</div>
-</div>
-
-<!-- Product Portfolio with vertical & horizontal scroll -->
-<section id="products" style="padding:40px; margin-top:50px; background-image:url('assets/images/Vision -bg.png'); background-color:#f9f9f9;">
-<h2 style="text-align: center; color: #005A9C;">Our Product Portfolio</h2>
-<div style="max-width: 1000px; margin: auto; overflow-x: auto; max-height: 400px; overflow-y: auto;">
-<table style="width: 100%; border-collapse: collapse; font-family: Arial, sans-serif; border: 1px solid #ccc;">
-<thead style="background-color: #e0e0e0;">
-<tr>
-<th style="padding: 10px; border: 1px solid #ccc;">Sr. No.</th>
-<th style="padding: 10px; border: 1px solid #ccc;">Product Name</th>
-<th style="padding: 10px; border: 1px solid #ccc;">Strength</th>
-<th style="padding: 10px; border: 1px solid #ccc;">Product Type</th>
-<th style="padding: 10px; border: 1px solid #ccc;">Pack</th>    
-<th style="padding: 10px; border: 1px solid #ccc;">Category</th>
-<th style="padding: 10px; border: 1px solid #ccc;">Class</th>
-<th style="padding: 10px; border: 1px solid #ccc;">Therapeutic Indication</th>
-<th style="padding: 10px; border: 1px solid #ccc;">MRP/STRIP/INR</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td style="padding: 10px; border: 1px solid #ccc;">1</td>
-<td style="padding: 10px; border: 1px solid #ccc;">AZIN-500</td>
-<td style="padding: 10px; border: 1px solid #ccc;">Azithromycin Tablets I.P 500 mg</td>
-<td style="padding: 10px; border: 1px solid #ccc;">Tablet</td>
-<th style="padding: 10px; border: 1px solid #ccc;">10X3</th>
-<td style="padding: 10px; border: 1px solid #ccc;">Anti-Infective / Antibiotic</td>
-<td style="padding: 10px; border: 1px solid #ccc;">Rx</td>
-<td style="padding: 10px; border: 1px solid #ccc;">Bacterial infections, Respiratory tract infections (Bronchitis, Pneumonia), ENT infections (Pharyngitis, Tonsillitis, Sinusitis)</td>
-<td style="padding: 10px; border: 1px solid #ccc;">₹ 95/-</td>
-</tr>
-<tr>
-<td style="padding: 10px; border: 1px solid #ccc;">2</td>
-<td style="padding: 10px; border: 1px solid #ccc;">ASP</td>
-<td style="padding: 10px; border: 1px solid #ccc;">Aceclofenac 100mg + Paracetamol 325mg + Serratiopeptidase 15 mg</td>
-<td style="padding: 10px; border: 1px solid #ccc;">Tablet</td>
-<th style="padding: 10px; border: 1px solid #ccc;">10X10</th>
-<td style="padding: 10px; border: 1px solid #ccc;">Analgesic &amp; Anti-Inflammatory</td>
-<td style="padding: 10px; border: 1px solid #ccc;">Rx</td>
-<td style="padding: 10px; border: 1px solid #ccc;">Relief of pain, inflammation, and swelling in arthritis, trauma, dental pain, post-surgery, and musculoskeletal disorders.</td>
-<td style="padding: 10px; border: 1px solid #ccc;">₹ 150/-</td>
-</tr>
-<tr>
-<td style="padding: 10px; border: 1px solid #ccc;">3</td>
-<td style="padding: 10px; border: 1px solid #ccc;">A-SUNAC</td>
-<td style="padding: 10px; border: 1px solid #ccc;">Aceclofenac 100 mg, Paracetamol 325mg</td>
-<td style="padding: 10px; border: 1px solid #ccc;">Tablet</td>
-<th style="padding: 10px; border: 1px solid #ccc;">10X10</th>
-<td style="padding: 10px; border: 1px solid #ccc;">Analgesic, Antipyretic, Anti-inflammatory &amp; Anti-cold preparation</td>
-<td style="padding: 10px; border: 1px solid #ccc;">Rx</td>
-<td style="padding: 10px; border: 1px solid #ccc;">Relief from cold, flu, fever, headache, body pain &amp; nasal congestion.</td>
-<td style="padding: 10px; border: 1px solid #ccc;">₹ 80/-</td>
-</tr>
-<tr>
-<td style="padding: 10px; border: 1px solid #ccc;">4</td>
-<td style="padding: 10px; border: 1px solid #ccc;">APLSL-DiaMet</td>
-<td style="padding: 10px; border: 1px solid #ccc;">Glimepiride 2 mg + Metformin HCl (ER)</td>
-<td style="padding: 10px; border: 1px solid #ccc;">Tablet</td>
-<th style="padding: 10px; border: 1px solid #ccc;">-</th>
-<td style="padding: 10px; border: 1px solid #ccc;">Anti-diabetic</td>
-<td style="padding: 10px; border: 1px solid #ccc;">Rx</td>
-<td style="padding: 10px; border: 1px solid #ccc;">Type 2 diabetes management</td>
-<td style="padding: 10px; border: 1px solid #ccc;">₹ —</td>
-</tr>
-<tr>
-<td style="padding: 10px; border: 1px solid #ccc;">5</td>
-<td style="padding: 10px; border: 1px solid #ccc;">APLSL-Lulizid</td>
-<td style="padding: 10px; border: 1px solid #ccc;">Luliconazole 1%</td>
-<td style="padding: 10px; border: 1px solid #ccc;">Cream</td>
-<th style="padding: 10px; border: 1px solid #ccc;">-</th>
-<td style="padding: 10px; border: 1px solid #ccc;">Antifungal</td>
-<td style="padding: 10px; border: 1px solid #ccc;">Rx</td>
-<td style="padding: 10px; border: 1px solid #ccc;">Skin fungal infections</td>
-<td style="padding: 10px; border: 1px solid #ccc;">₹ —</td>
-</tr>
-<tr>
-<td style="padding: 10px; border: 1px solid #ccc;">6</td>
-<td style="padding: 10px; border: 1px solid #ccc;">Ahanitya-Ketozin</td>
-<td style="padding: 10px; border: 1px solid #ccc;">Ketoconazole 2%</td>
-<td style="padding: 10px; border: 1px solid #ccc;">Shampoo</td>
-<th style="padding: 10px; border: 1px solid #ccc;">-</th>
-<td style="padding: 10px; border: 1px solid #ccc;">Antifungal</td>
-<td style="padding: 10px; border: 1px solid #ccc;">OTC</td>
-<td style="padding: 10px; border: 1px solid #ccc;">Dandruff, seborrheic dermatitis</td>
-<td style="padding: 10px; border: 1px solid #ccc;">₹ —</td>
-</tr>
-<tr>
-<td style="padding: 10px; border: 1px solid #ccc;">7</td>
-<td style="padding: 10px; border: 1px solid #ccc;">APLSL-Cutiderm</td>
-<td style="padding: 10px; border: 1px solid #ccc;">Itraconazole 1% + Ofloxacin 0.75% + Ornidazole 2% + Clobetasol 0.05%</td>
-<td style="padding: 10px; border: 1px solid #ccc;">Cream</td>
-<th style="padding: 10px; border: 1px solid #ccc;">-</th>
-<td style="padding: 10px; border: 1px solid #ccc;">Antifungal &amp; Antibacterial</td>
-<td style="padding: 10px; border: 1px solid #ccc;">Rx</td>
-<td style="padding: 10px; border: 1px solid #ccc;">Fungal &amp; bacterial skin infections</td>
-<td style="padding: 10px; border: 1px solid #ccc;">₹ —</td>
-</tr>
-<tr>
-<td style="padding: 10px; border: 1px solid #ccc;">8</td>
-<td style="padding: 10px; border: 1px solid #ccc;">Ahanitya-AmbroLev</td>
-<td style="padding: 10px; border: 1px solid #ccc;">Ambroxol 60mg + Levocetirizine 2.5mg + Paracetamol 500mg + Phenylephrine 5mg</td>
-<td style="padding: 10px; border: 1px solid #ccc;">Tablet</td>
-<th style="padding: 10px; border: 1px solid #ccc;">-</th>
-<td style="padding: 10px; border: 1px solid #ccc;">Cold &amp; Flu Relief</td>
-<td style="padding: 10px; border: 1px solid #ccc;">Rx</td>
-<td style="padding: 10px; border: 1px solid #ccc;">Relief from cough, cold, nasal congestion, and fever</td>
-<td style="padding: 10px; border: 1px solid #ccc;">₹ —</td>
-</tr>
-<tr>
-<td style="padding: 10px; border: 1px solid #ccc;">9</td>
-<td style="padding: 10px; border: 1px solid #ccc;">PANTO-DSR</td>
-<td style="padding: 10px; border: 1px solid #ccc;">Pantoprazole 40 mg + Domperidone 30 mg</td>
-<td style="padding: 10px; border: 1px solid #ccc;">Capsule</td>
-<th style="padding: 10px; border: 1px solid #ccc;">10X10</th>
-<td style="padding: 10px; border: 1px solid #ccc;">Gastrointestinal</td>
-<td style="padding: 10px; border: 1px solid #ccc;">Rx</td>
-<td style="padding: 10px; border: 1px solid #ccc;">Acid reflux, GERD, indigestion</td>
-<td style="padding: 10px; border: 1px solid #ccc;">₹ 170/-</td>
-</tr>
-<tr>
-<td style="padding: 10px; border: 1px solid #ccc;">10</td>
-<td style="padding: 10px; border: 1px solid #ccc;">LE-MONT</td>
-<td style="padding: 10px; border: 1px solid #ccc;">Montelukast 10 mg + Levocetirizine 5 mg</td>
-<td style="padding: 10px; border: 1px solid #ccc;">Tablet</td>
-<th style="padding: 10px; border: 1px solid #ccc;">20X10</th>
-<td style="padding: 10px; border: 1px solid #ccc;">Anti-allergic (LTRA + Antihistamine)</td>
-<td style="padding: 10px; border: 1px solid #ccc;">Rx</td>
-<td style="padding: 10px; border: 1px solid #ccc;">Allergic rhinitis (seasonal & perennial), allergic cough, nasal congestion, sneezing, runny nose.</td>
-<td style="padding: 10px; border: 1px solid #ccc;">₹ 180/-</td>
-</tr>
-</tbody>
-</table>
-</div>
-</section>
-</section>
-
-<!-- PRODUCT GALLERY SECTION -->
-<section id="product-gallery" style="padding:40px 20px; max-width:1100px; margin:40px auto;">
-  <h2 style="text-align:center; color:#11799a;">Product Gallery</h2>
-  <p style="text-align:center; max-width:700px; margin:0 auto 10px; color:#555; font-size:0.95rem;">
-    Filter by category to view multiple product images.
-  </p>
-  <div class="pg-filter-bar">
-    <button class="pg-btn active" data-category="all">All</button>
-    <button class="pg-btn" data-category="medicines">Medicines (Rx &amp; OTC)</button>
-    <button class="pg-btn" data-category="ayurvedic">Ayurvedic &amp; Herbal</button>
-    <button class="pg-btn" data-category="devices">Medical Devices</button>
-    <button class="pg-btn" data-category="cosmetics">Cosmetics &amp; Skin Care</button>
-  </div>
-
-  <!-- Scrollable wrapper for Product Gallery (up–down scroll) -->
-  <div style="max-height:500px; overflow-y:auto; padding-right:4px;">
-    <div class="pg-grid">
-      <!-- Medicines -->
-      <div class="pg-item" data-category="medicines">
-        <img src="assets/images/ASP (2).png">
-        <p>Medicines (Rx &amp; OTC) – Product 1</p>
-      </div>
-      <div class="pg-item" data-category="medicines">
-        <img src="assets/images/A SUNAC 1.png ">
-        <p>Medicines (Rx &amp; OTC) – Product 2</p>
-      </div>
-      <div class="pg-item" data-category="medicines">
-        <img src="assets/images/PANTO-DSR.png" alt="PANTO DSR">
-        <p>Medicines (Rx &amp; OTC) – Product 3</p>
-      </div>
-      <div class="pg-item" data-category="medicines">
-        <img src="assets/images/AZIN-500.png" alt="AZIN-500">
-        <p>Medicines (Rx &amp; OTC) – Product 4</p>
-      </div>
-        <div class="pg-item" data-category="medicines">
-        <img src="assets/images/LE_MONT.png">
-        <p>Medicines (Rx &amp; OTC) – Product 5</p>
+<main class="wrap">
+  <div class="grid">
+    <!-- LEFT: APP -->
+    <div class="card">
+      <div class="tabs">
+        <button class="tab active" id="tabUser">User Login</button>
+        <button class="tab" id="tabAdmin">Admin Login</button>
+        <button class="tab hidden" id="tabInventory">Inventory</button>
       </div>
 
-      <!-- Ayurvedic -->
-      <div class="pg-item" data-category="ayurvedic">
-        <img src="assets/images/Ayurved -bg.png" alt="Ayurvedic &amp; Herbal Product 1">
-        <p>Ayurvedic &amp; Herbal – Product 1</p>
-      </div>
-      <div class="pg-item" data-category="ayurvedic">
-        <img src="assets/images/cosmatic-bg.png" alt="Ayurvedic &amp; Herbal Product 2">
-        <p>Ayurvedic &amp; Herbal – Product 2</p>
-      </div>
+      <!-- USER LOGIN -->
+      <section id="panelUser" class="content">
+        <h2>User Login</h2>
+        <p class="sub">Login using Email, Name, and Phone number.</p>
 
-      <!-- Devices -->
-      <div class="pg-item" data-category="devices">
-        <img src="assets/images/medical device-bg.png" alt="Medical Devices Product 1">
-        <p>Medical Devices – Product 1</p>
-      </div>
-      <div class="pg-item" data-category="devices">
-        <img src="assets/images/products/devices.jpg" alt="Medical Devices Product 2">
-        <p>Medical Devices – Product 2</p>
-      </div>
+        <div class="row">
+          <div>
+            <label>Email</label>
+            <input id="uEmail" type="email" placeholder="name@example.com" />
+          </div>
+          <div>
+            <label>Name</label>
+            <input id="uName" type="text" placeholder="Full name" />
+          </div>
+        </div>
 
-      <!-- Cosmetics -->
-      <div class="pg-item" data-category="cosmetics">
-        <img src="assets/images/products/cosmetics.jpg" alt="Cosmetics &amp; Skin Care Product 1">
-        <p>Cosmetics &amp; Skin Care – Product 1</p>
-      </div>
-      <div class="pg-item" data-category="cosmetics">
-        <img src="assets/images/products/cosmetics.jpg" alt="Cosmetics &amp; Skin Care Product 2">
-        <p>Cosmetics &amp; Skin Care – Product 2</p>
+        <div style="margin-top:12px">
+          <label>Phone</label>
+          <input id="uPhone" type="tel" placeholder="10-digit mobile number" />
+        </div>
+
+        <div class="btns">
+          <button class="btn-primary" id="btnUserLogin">Login</button>
+          <button class="btn-ghost" id="btnUserLogout">Logout</button>
+          <button class="btn-ghost" id="btnGoInventoryFromUser">View Inventory</button>
+        </div>
+
+        <div class="note">
+          Inventory data is stored in your browser (localStorage). If you open this on another phone/device, the data will not sync automatically.
+        </div>
+        <div id="userAlert" class="alert hidden"></div>
+      </section>
+
+      <!-- ADMIN LOGIN -->
+      <section id="panelAdmin" class="content hidden">
+        <h2>Admin Login</h2>
+        <p class="sub">Admin can update Stock, Price, and MRP.</p>
+
+        <div class="row">
+          <div>
+            <label>Admin ID (Email)</label>
+            <input id="aEmail" type="email" placeholder="admin@example.com" />
+          </div>
+          <div>
+            <label>Password</label>
+            <input id="aPass" type="password" placeholder="••••••••" />
+          </div>
+        </div>
+
+        <div class="btns">
+          <button class="btn-primary" id="btnAdminLogin">Login as Admin</button>
+          <button class="btn-ghost" id="btnAdminLogout">Logout</button>
+          <button class="btn-ghost" id="btnGoInventoryFromAdmin">Open Inventory Panel</button>
+        </div>
+
+        <div class="note">
+          Default Admin credentials are inside this HTML file (you can change them in the code).
+        </div>
+        <div id="adminAlert" class="alert hidden"></div>
+      </section>
+
+      <!-- INVENTORY -->
+      <section id="panelInventory" class="content hidden">
+        <h2>Inventory</h2>
+        <p class="sub">Search and view medicines. Admin can add/edit/delete.</p>
+
+        <div class="row">
+          <div>
+            <label>Search</label>
+            <input id="searchBox" type="text" placeholder="Search by medicine name..." />
+          </div>
+          <div>
+            <label>Filter</label>
+            <select id="stockFilter">
+              <option value="all">All</option>
+              <option value="in">In stock</option>
+              <option value="low">Low stock (≤ 10)</option>
+              <option value="out">Out of stock</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="kpi">
+          <div class="box">
+            <div class="n" id="kpiTotal">0</div>
+            <div class="t">Total Items</div>
+          </div>
+          <div class="box">
+            <div class="n" id="kpiInStock">0</div>
+            <div class="t">In Stock</div>
+          </div>
+          <div class="box">
+            <div class="n" id="kpiLow">0</div>
+            <div class="t">Low / Out</div>
+          </div>
+        </div>
+
+        <div class="btns" style="margin-top:14px">
+          <button class="btn-primary hidden" id="btnAddNew">+ Add Medicine</button>
+          <button class="btn-ghost" id="btnExport">Export JSON</button>
+          <button class="btn-ghost" id="btnImport">Import JSON</button>
+          <button class="btn-danger hidden" id="btnReset">Reset Demo Data</button>
+        </div>
+
+        <div class="tablewrap" style="margin-top:12px">
+          <table>
+            <thead>
+              <tr>
+                <th>Medicine</th>
+                <th>Strength / Pack</th>
+                <th>MRP (₹)</th>
+                <th>Price (₹)</th>
+                <th>Stock</th>
+                <th>Status</th>
+                <th style="width:210px">Actions</th>
+              </tr>
+            </thead>
+            <tbody id="invBody"></tbody>
+          </table>
+        </div>
+
+        <div id="invAlert" class="alert hidden"></div>
+      </section>
+    </div>
+
+    <!-- RIGHT: ADD/EDIT FORM -->
+    <div class="card">
+      <div class="content">
+        <h2 id="formTitle">Medicine Details</h2>
+        <p class="sub" id="formSub">Admins can add/edit medicines here.</p>
+
+        <div id="formLockNote" class="alert bad">
+          Admin login required to edit inventory.
+        </div>
+
+        <div id="medicineForm" class="hidden">
+          <input type="hidden" id="mId" />
+
+          <div style="margin-bottom:12px">
+            <label>Medicine Name</label>
+            <input id="mName" type="text" placeholder="e.g., Montelukast + Levocetirizine" />
+          </div>
+
+          <div class="row">
+            <div>
+              <label>Strength / Pack</label>
+              <input id="mPack" type="text" placeholder="e.g., 10 Tablets / 10 Caps" />
+            </div>
+            <div>
+              <label>Stock Qty</label>
+              <input id="mStock" type="number" min="0" placeholder="e.g., 50" />
+            </div>
+          </div>
+
+          <div class="row" style="margin-top:12px">
+            <div>
+              <label>MRP (₹)</label>
+              <input id="mMrp" type="number" min="0" step="0.01" placeholder="e.g., 170" />
+            </div>
+            <div>
+              <label>Price (₹)</label>
+              <input id="mPrice" type="number" min="0" step="0.01" placeholder="e.g., 135" />
+            </div>
+          </div>
+
+          <div class="btns">
+            <button class="btn-ok" id="btnSave">Save</button>
+            <button class="btn-ghost" id="btnClear">Clear</button>
+          </div>
+
+          <div class="note">
+            Tip: Keep <b>Price</b> lower than <b>MRP</b> for trade margin.
+          </div>
+          <div id="formAlert" class="alert hidden"></div>
+        </div>
+
       </div>
     </div>
   </div>
-</section>
+</main>
 
-<!-- Services -->
-<section id="services">
-<h2>What We Offer</h2>
-<div class="cards">
-<div class="card">
-<h3>Medicines &amp; Injectables</h3>
-<p>High-quality medicines and injectables ensuring patient well-being and fast recovery.</p>
-</div>
-<div class="card">
-<h3>Ayurvedic Products</h3>
-<p>Authentic ayurvedic solutions combining traditional wisdom with modern science.</p>
-</div>
-<div class="card">
-<h3>Medical Equipment</h3>
-<p>Advanced medical equipment and supplies to support healthcare professionals.</p>
-</div>
-<div class="card">
-<h3>Cosmetics &amp; Skin Care</h3>
-<p>Delivering dermatologically trusted and research-driven formulations that combine innovation with care,
-          helping individuals achieve healthy, radiant, and confident skin.</p>
-</div>
-
-<div class="card">
-<h3>X-Ray at Your Home</h3>
-<p>Book X-ray at your home with Ahanitya Pharma Life Science</p>
-<button class="btn" id="openBooking">Book Now</button>
-</div>
-</div>
-
-<!-- Modal -->
-<div aria-hidden="true" aria-labelledby="bookingTitle" aria-modal="true" class="modal" id="bookingModal" role="dialog">
-<div class="modal__overlay" id="closeBooking"></div>
-<div class="modal__content" role="document" tabindex="-1">
-<button aria-label="Close" class="modal__close" id="xClose">×</button>
-<h3 id="bookingTitle">Book an Appointment</h3>
-<form action="https://formsubmit.co/infoahanityapharmalifescellp@gmail.com" class="form" method="POST" novalidate="" onsubmit="return validateServiceArea()">
-<input name="_subject" type="hidden" value="New X-Ray Appointment Request"/>
-<input name="_template" type="hidden" value="table"/>
-<input name="_captcha" type="hidden" value="false"/>
-<label>
-        Name
-        <input name="name" placeholder="Your full name" required="" type="text"/>
-</label>
-<label>
-        Mail ID
-        <input name="email" placeholder="you@example.com" required="" type="email"/>
-</label>
-<label>
-        Contact No
-        <input name="phone" pattern="[\+0-9\s\-()]{8,}" placeholder="+91 98765 43210" required="" title="Enter a valid phone number" type="tel"/>
-</label>
-<label>
-        Address
-        <p style="margin:.25rem 0 0; color:#6b7280; font-weight:500;">
-          At present, this service is limited to Ahmedabad city. Kindly mention “Ahmedabad” in your address.
-        </p>
-<textarea id="address" name="address" placeholder="Street, Area, Ahmedabad, PIN" required="" rows="3"></textarea>
-</label>
-<label>
-        Referred by
-        <input name="referred_by" placeholder="Doctor / Hospital name (optional)" type="text"/>
-</label>
-<label>
-        Referrer Contact No (if available)
-        <input name="referrer_contact" pattern="[\+0-9\s\-()]{8,}" placeholder="+91 9XXXXXXXXX (optional)" title="Enter a valid phone number (optional)" type="tel"/>
-</label>
-<label>
-        Appointment Date
-        <input id="appointment_date" name="appointment_date" required="" type="date"/>
-</label>
-<label>
-        Select Time Slot
-        <select name="time_slot" required="">
-<option value="">-- Choose a time --</option>
-<option>09:00–10:00</option>
-<option>10:00–11:00</option>
-<option>11:00–12:00</option>
-<option>14:00–15:00</option>
-<option>15:00–16:00</option>
-<option>16:00–17:00</option>
-<option>17:00–18:00</option>
-</select>
-</label>
-<div class="actions">
-<button class="btn btn--ghost" id="cancelBooking" type="button">Cancel</button>
-<button class="btn" type="submit">Submit</button>
-</div>
-</form>
-</div>
-</div>
-
-<style>
-  :root{
-    --brand:#11799a; --bg:#f5f7fa; --text:#1f2937; --muted:#6b7280;
-    --card:#ffffff; --ring:rgba(20,83,45,.15);
-  }
-  html { scroll-behavior: smooth; }
-
-  .card{
-    background:var(--card);
-    border:1px solid #e5e7eb;
-    border-radius:16px;
-    padding:18px;
-    box-shadow:0 6px 20px rgba(0,0,0,.06);
-    max-width:640px;
-  }
-  .card h3{ margin:0 0 8px; color:var(--brand); }
-  .card p{ margin:0 0 14px; color:var(--text); }
-  .btn{
-    display:inline-flex; align-items:center; justify-content:center;
-    padding:10px 16px; border-radius:999px; border:0;
-    background:var(--brand); color:#fff; font-weight:600; cursor:pointer;
-    box-shadow:0 6px 16px var(--ring); transition:transform .05s ease;
-  }
-  .btn:active{ transform:translateY(1px); }
-  .btn.btn--ghost{
-    background:#fff; color:var(--brand); border:1px solid #d1d5db;
-  }
-
-  .modal{ position:fixed; inset:0; display:none; }
-  .modal[aria-hidden="false"]{ display:block; }
-  .modal__overlay{
-    position:absolute; inset:0; background:rgba(0,0,0,.45);
-  }
-  .modal__content{
-    position:relative;
-    max-width:560px; width:calc(100% - 24px);
-    margin:4vh auto; background:#fff; border-radius:20px;
-    padding:20px 18px; box-shadow:0 10px 30px rgba(0,0,0,.2);
-    max-height:92vh;
-    overflow-y:auto;
-    -webkit-overflow-scrolling:touch;
-  }
-  .modal__close{
-    position:absolute; top:10px; right:12px; font-size:22px;
-    width:36px; height:36px; line-height:36px; text-align:center;
-    border-radius:999px; border:0; background:#f3f4f6; cursor:pointer;
-  }
-
-  body.modal-open { overflow:hidden; }
-
-  .form{ display:grid; gap:12px; margin-top:8px; }
-  .form label{ display:grid; gap:6px; font-weight:600; color:var(--text); }
-  .form input, .form textarea, .form select{
-    width:100%; padding:10px 12px; border-radius:10px;
-    border:1px solid #d1d5db; outline:none; background:#fff; color:var(--text);
-  }
-  .form input:focus, .form textarea:focus, .form select:focus{
-    border-color:var(--brand); box-shadow:0 0 0 4px var(--ring);
-  }
-  .actions{ display:flex; gap:10px; justify-content:flex-end; margin-top:8px; }
-
-  @media (max-width:480px){
-    .modal__content{ margin:6vh auto; padding:18px 14px; }
-  }
-</style>
-
-<script>
-  (function(){
-    const openBtn = document.getElementById('openBooking');
-    const modal = document.getElementById('bookingModal');
-    const closeOverlay = document.getElementById('closeBooking');
-    const cancelBtn = document.getElementById('cancelBooking');
-    const xClose = document.getElementById('xClose');
-
-    function openModal(){
-      modal.setAttribute('aria-hidden','false');
-      document.body.classList.add('modal-open');
-      const first = modal.querySelector('input, select, textarea, button');
-      if(first) setTimeout(()=> first.focus(), 50);
-      document.addEventListener('keydown', escClose);
-    }
-    function closeModal(){
-      modal.setAttribute('aria-hidden','true');
-      document.body.classList.remove('modal-open');
-      document.removeEventListener('keydown', escClose);
-      openBtn && openBtn.focus();
-    }
-    function escClose(e){ if(e.key === 'Escape') closeModal(); }
-
-    openBtn && openBtn.addEventListener('click', openModal);
-    closeOverlay && closeOverlay.addEventListener('click', closeModal);
-    cancelBtn && cancelBtn.addEventListener('click', closeModal);
-    xClose && xClose.addEventListener('click', closeModal);
-
-    const dateInput = document.getElementById("appointment_date");
-    if (dateInput) {
-      const today = new Date();
-      const yyyy = today.getFullYear();
-      const mm = String(today.getMonth() + 1).padStart(2,'0');
-      const dd = String(today.getDate()).padStart(2,'0');
-      dateInput.setAttribute('min', `${yyyy}-${mm}-${dd}`);
-    }
-  })();
-
-  function validateServiceArea() {
-    const address = document.getElementById('address').value.toLowerCase();
-    if (!address.includes('ahmedabad')) {
-      alert('Sorry, our service is currently available only in Ahmedabad.');
-      return false;
-    }
-    return true;
-  }
-</script>
-    <div class="services-container">
-<div class="service-item">
-<p><strong>• Distribution:</strong> From life-saving medicines to critical care solutions, we ensure global reach through an extensive supply chain network. 
-                                       Our efficient distribution system guarantees that essential pharmaceuticals and medical supplies reach healthcare providers and patients 
-                                       quickly and safely, wherever they are needed.</p>
-</div>
-<div class="service-item">
-<p><strong>• Import &amp; Export:</strong> We facilitate the global trade of pharmaceutical products, medical supplies, and healthcare solutions to ensure accessibility worldwide. 
-    Through robust international partnerships and compliance with all regulatory standards, we procure and get developed products under third-party manufacturing, bringing therapies 
-    and equipment to markets that need them.</p>
-</div>
-</section>
-
-<!-- Contact Us -->
-<section id="contact">
-<h2>Contact Us</h2>
-<p>We welcome healthcare providers, business partners, and all who share our mission to improve global health. Connect with <strong>Ahanitya Pharma Life Science LLP</strong> for trusted support and service.</p>
-<p>If you have any inquiries or need assistance, please fill out the form below. We will get back to you as soon as possible.</p>
-<form action="https://formsubmit.co/infoahanityapharmalifescellp@gmail.com" enctype="multipart/form-data" method="POST">
-<input name="name" placeholder="Your Name" required="" type="text">
-<input name="firmName" placeholder="Your Firm Name" required="" type="text">
-<label for="businessType">Business Type:</label>
-<select id="businessType" name="businessType" required="">
-<option value="">-- Select Business Type --</option>
-<option value="Stockist">Stockist</option>
-<option value="Distributor">Distributor</option>
-<option value="Retailer">Retailer</option>
-<option value="Healthcare Professional">Healthcare Professional</option>
-<option value="Hospital">Hospital</option>
-<option value="Hospitals &amp; Clinics">Hospitals &amp; Clinics</option>
-<option value="Nursing Homes &amp; Elder Care Facilities">Nursing Homes &amp; Elder Care Facilities</option>
-<option value="Government Health Departments">Government Health Departments</option>
-<option value="Medical Colleges &amp; Universities">Medical Colleges &amp; Universities</option>
-<option value="Manufacturer">Manufacturer</option>
-<option value="NGOs &amp; Health Foundations">NGOs &amp; Health Foundations</option>
-<option value="Corporate Wellness Programs">Corporate Wellness Programs</option>
-</select>
-<input name="email" placeholder="Your Email" required="" type="email">
-<input name="phone" placeholder="Your Phone Number" type="text">
-<textarea name="message" placeholder="Name your product and MoQ !" required="" rows="5"></textarea>
-<label for="attachment">Attach a file (PDF, DOC, DOCX, JPG, PNG, CSV, XLS, XLSX):</label>
-<input accept=".pdf,.doc,.docx,.jpg,.png,.csv,.xls,.xlsx" id="attachment" name="attachment" type="file">
-<input name="_subject" type="hidden" value="New Contact Form Submission - Ahanitya Pharma Life Science LLP"/>
-<input name="_template" type="hidden" value="table"/>
-<input name="_captcha" type="hidden" value="false"/>
-<button type="submit">Send Message</button>
-<p>Thank you for considering <strong>Ahanitya Pharma Life Science LLP</strong> as your partner in healthcare excellence. We look forward to working together to create a healthier future for all.</p>
-<div class="Address">
-<h2>Registered Address</h2>
-<p> 2,1437/1/1 Ambika Estate, Rakanpur Chokadi, Kalol, Gandhi Nagar, Kalol, Gujarat, India, 382721</p>
-</div>
-</form>
-</section>
-
-<footer class="footer">
-  <div>
-    <i class="fa-solid fa-envelope"></i>
-    <a href="mailto:infoahanityapharmalifescellp@gmail.com">infoahanityapharmalifescellp@gmail.com</a>
-    | 
-    <i class="fa-solid fa-envelope"></i>
-    <a href="mailto:ahanityapharmasuppliesllp@gmail.com">ahanityapharmasuppliesllp@gmail.com</a>
-    | 
-    <i class="fa-solid fa-phone"></i>
-    <span>+91 6359550971, +91 8487090212</span>
-    📍
-    <a href="https://maps.app.goo.gl/qp2hStpkM5tDUkKv6" target="_blank">
-      View Our Location on Google Maps
-    </a>
-  </div>
-
-  <div class="social-icons">
-    <a href="https://www.facebook.com/profile.php?id=61581932870291" target="_blank"><i class="fab fa-facebook"></i></a>
-    <a href="https://www.instagram.com/ahanityapharma?utm_source=qr&igsh=MXA5NmdnbmV4a2EyeA==" target="_blank"><i class="fab fa-instagram"></i></a>
-    <a href="https://linkedin.com/company/yourcompany" target="_blank"><i class="fab fa-linkedin"></i></a>
-    <a href="https://twitter.com/yourhandle" target="_blank"><i class="fab fa-twitter"></i></a>
-    <a href="https://wa.me/918487090212" target="_blank"><i class="fab fa-whatsapp"></i></a>
-  </div>
-
-  <p>© <span id="year"></span> Ahanitya Pharma Life Science LLP. All Rights Reserved.</p>
+<footer>
+  © <span id="yr"></span> Ahanitya Pharma Life Science LLP — Inventory Web App (Static demo)
 </footer>
 
-<style>
-.footer {
-  color: #fff;
-  background: #11799a;
-  text-align: center;
-  padding: 25px;
-  font-family: Arial, sans-serif;
-}
-
-.footer a {
-  color: white;
-  text-decoration: none;
-  margin: 0 8px;
-}
-
-.footer a:hover {
-  color: #00ff99;
-}
-
-.social-icons a i {
-  font-size: 22px;
-  color: white;
-  margin: 0 12px;
-  transition: transform 0.3s ease, color 0.3s ease;
-}
-
-.social-icons a i:hover {
-  color: #00ff99;
-  transform: scale(1.3);
-}
-</style>
-
 <script>
-document.getElementById("year").textContent = new Date().getFullYear();
-</script>
+/* =========================
+   CONFIG (CHANGE AS NEEDED)
+   ========================= */
+const CONFIG = {
+  appStorageKey: "ahanitya_inventory_v1",
+  sessionKey: "ahanitya_session_v1",
+  // Change these admin credentials:
+  adminEmail: "infoahanityapharmalifescellp@gmail.com",
+  adminPassword: "Ahanitya@123",
+  lowStockThreshold: 10
+};
 
-<script>
-  (function(){
-    var gallery = document.getElementById('product-gallery');
-    if (!gallery) return;
-    var buttons = gallery.querySelectorAll('.pg-btn');
-    var items = gallery.querySelectorAll('.pg-item');
+/* =========================
+   UTILITIES
+   ========================= */
+const $ = (id) => document.getElementById(id);
 
-    buttons.forEach(function(btn){
-      btn.addEventListener('click', function(){
-        var category = btn.getAttribute('data-category');
-        buttons.forEach(function(b){ b.classList.remove('active'); });
-        btn.classList.add('active');
-        items.forEach(function(item){
-          var itemCat = item.getAttribute('data-category');
-          if (category === 'all' || itemCat === category){
-            item.style.display = '';
-          } else {
-            item.style.display = 'none';
-          }
-        });
-      });
-    });
-  })();
-</script>
+function showAlert(el, msg, kind="ok"){
+  el.classList.remove("hidden","ok","bad");
+  el.classList.add(kind === "bad" ? "bad" : "ok");
+  el.textContent = msg;
+  setTimeout(()=> el.classList.add("hidden"), 3500);
+}
 
+function currency(n){
+  const x = Number(n || 0);
+  return x.toFixed(2);
+}
 
-<!-- ✅ IMAGE LIGHTBOX (AUTO for all gallery images) -->
-<div id="imgLightbox" style="
-  display:none;
-  position:fixed;
-  inset:0;
-  background:rgba(0,0,0,0.85);
-  z-index:9999;
-  align-items:center;
-  justify-content:center;
-">
-  <span id="imgClose" style="
-    position:absolute;
-    top:20px;
-    right:30px;
-    font-size:36px;
-    color:#fff;
-    cursor:pointer;
-  ">&times;</span>
+function uid(){
+  return "m_" + Math.random().toString(16).slice(2) + "_" + Date.now().toString(16);
+}
 
-  <img id="lightboxImg" src="" style="
-    max-width:95%;
-    max-height:95%;
-    object-fit:contain;
-    border-radius:10px;
-    box-shadow:0 0 30px rgba(255,255,255,0.25);
-  ">
-</div>
+/* =========================
+   DATA: LOAD/SAVE INVENTORY
+   ========================= */
+function demoData(){
+  return [
+    { id: uid(), name:"Montelukast + Levocetirizine", pack:"10 Tablets", mrp:170, price:135, stock:45 },
+    { id: uid(), name:"Pantoprazole", pack:"10 Tablets", mrp:120, price:92, stock:18 },
+    { id: uid(), name:"Vitamin D3 60000 IU", pack:"4 Caps", mrp:110, price:78, stock:8 },
+    { id: uid(), name:"Azithromycin 500", pack:"3 Tablets", mrp:95, price:70, stock:0 }
+  ];
+}
 
-<script>
-/* ✅ High‑Resolution Image Lightbox */
-(function () {
-  const lightbox = document.getElementById('imgLightbox');
-  const lightboxImg = document.getElementById('lightboxImg');
-  const closeBtn = document.getElementById('imgClose');
+function loadInventory(){
+  const raw = localStorage.getItem(CONFIG.appStorageKey);
+  if(!raw){
+    const seed = demoData();
+    localStorage.setItem(CONFIG.appStorageKey, JSON.stringify(seed));
+    return seed;
+  }
+  try{
+    const data = JSON.parse(raw);
+    if(!Array.isArray(data)) throw new Error("Invalid");
+    return data;
+  }catch(e){
+    const seed = demoData();
+    localStorage.setItem(CONFIG.appStorageKey, JSON.stringify(seed));
+    return seed;
+  }
+}
 
-  if (!lightbox || !lightboxImg) return;
+function saveInventory(data){
+  localStorage.setItem(CONFIG.appStorageKey, JSON.stringify(data));
+}
 
-  document.querySelectorAll('.pg-item img').forEach(img => {
-    img.style.cursor = 'zoom-in';
-    img.addEventListener('click', () => {
-      lightboxImg.src = img.src;
-      lightbox.style.display = 'flex';
-      document.body.style.overflow = 'hidden';
-    });
-  });
+let inventory = loadInventory();
 
-  function closeLightbox() {
-    lightbox.style.display = 'none';
-    document.body.style.overflow = '';
+/* =========================
+   SESSION
+   ========================= */
+function getSession(){
+  const raw = localStorage.getItem(CONFIG.sessionKey);
+  if(!raw) return null;
+  try{ return JSON.parse(raw); }catch{ return null; }
+}
+function setSession(sess){
+  localStorage.setItem(CONFIG.sessionKey, JSON.stringify(sess));
+  updateSessionPill();
+  syncRoleUI();
+}
+function clearSession(){
+  localStorage.removeItem(CONFIG.sessionKey);
+  updateSessionPill();
+  syncRoleUI();
+}
+function isAdmin(){
+  const s = getSession();
+  return s && s.role === "admin";
+}
+function isUser(){
+  const s = getSession();
+  return s && s.role === "user";
+}
+
+function updateSessionPill(){
+  const s = getSession();
+  if(!s){
+    $("sessionPill").textContent = "Not logged in";
+    return;
+  }
+  if(s.role === "admin"){
+    $("sessionPill").textContent = "Admin: " + s.email;
+  }else{
+    $("sessionPill").textContent = "User: " + s.name + " (" + s.phone + ")";
+  }
+}
+
+/* =========================
+   TABS / PANELS
+   ========================= */
+function setActiveTab(tab){
+  ["tabUser","tabAdmin","tabInventory"].forEach(id => $(id).classList.remove("active"));
+  tab.classList.add("active");
+}
+
+function showPanel(which){
+  $("panelUser").classList.add("hidden");
+  $("panelAdmin").classList.add("hidden");
+  $("panelInventory").classList.add("hidden");
+
+  if(which === "user") $("panelUser").classList.remove("hidden");
+  if(which === "admin") $("panelAdmin").classList.remove("hidden");
+  if(which === "inventory") $("panelInventory").classList.remove("hidden");
+}
+
+function syncRoleUI(){
+  // Inventory tab visibility
+  $("tabInventory").classList.toggle("hidden", !(isUser() || isAdmin()));
+
+  // Admin-only buttons
+  $("btnAddNew").classList.toggle("hidden", !isAdmin());
+  $("btnReset").classList.toggle("hidden", !isAdmin());
+
+  // Right-side form lock
+  $("formLockNote").classList.toggle("hidden", isAdmin());
+  $("medicineForm").classList.toggle("hidden", !isAdmin());
+
+  // Default view behavior
+  if(!(isUser() || isAdmin())){
+    setActiveTab($("tabUser"));
+    showPanel("user");
   }
 
-  closeBtn.addEventListener('click', closeLightbox);
+  renderInventory();
+}
 
-  lightbox.addEventListener('click', (e) => {
-    if (e.target === lightbox) closeLightbox();
-  });
+/* =========================
+   INVENTORY RENDER + KPIs
+   ========================= */
+function statusChip(stock){
+  const s = Number(stock || 0);
+  if(s <= 0) return `<span class="chip low">Out</span>`;
+  if(s <= CONFIG.lowStockThreshold) return `<span class="chip low">Low</span>`;
+  return `<span class="chip ok">In</span>`;
+}
 
-  document.addEventListener('keydown', (e) => {
-    if (e.key === 'Escape') closeLightbox();
-  });
-})();
+function matchesFilter(item){
+  const q = ($("searchBox").value || "").trim().toLowerCase();
+  const f = $("stockFilter").value;
+
+  const nameOk = item.name.toLowerCase().includes(q) || item.pack.toLowerCase().includes(q);
+
+  let stockOk = true;
+  const s = Number(item.stock || 0);
+  if(f === "in") stockOk = s > CONFIG.lowStockThreshold;
+  if(f === "low") stockOk = s > 0 && s <= CONFIG.lowStockThreshold;
+  if(f === "out") stockOk = s <= 0;
+
+  return nameOk && stockOk;
+}
+
+function renderKPIs(list){
+  const total = list.length;
+  const inStock = list.filter(x => Number(x.stock||0) > CONFIG.lowStockThreshold).length;
+  const lowOut = total - inStock;
+
+  $("kpiTotal").textContent = total;
+  $("kpiInStock").textContent = inStock;
+  $("kpiLow").textContent = lowOut;
+}
+
+function renderInventory(){
+  const list = inventory.filter(matchesFilter);
+
+  renderKPIs(inventory);
+
+  const tbody = $("invBody");
+  tbody.innerHTML = "";
+
+  if(list.length === 0){
+    tbody.innerHTML = `<tr><td colspan="7" class="muted">No items found.</td></tr>`;
+    return;
+  }
+
+  for(const item of list){
+    const canEdit = isAdmin();
+    const actions = canEdit
+      ? `
+        <div class="right">
+          <button class="small btn-ghost" onclick="editItem('${item.id}')">Edit</button>
+          <button class="small btn-danger" onclick="deleteItem('${item.id}')">Delete</button>
+        </div>`
+      : `<span class="muted">View only</span>`;
+
+    const tr = document.createElement("tr");
+    tr.innerHTML = `
+      <td><b>${escapeHtml(item.name)}</b></td>
+      <td>${escapeHtml(item.pack)}</td>
+      <td>₹ ${currency(item.mrp)}</td>
+      <td>₹ ${currency(item.price)}</td>
+      <td><b>${Number(item.stock||0)}</b></td>
+      <td>${statusChip(item.stock)}</td>
+      <td>${actions}</td>
+    `;
+    tbody.appendChild(tr);
+  }
+}
+
+// Basic HTML escape for safe rendering
+function escapeHtml(str){
+  return String(str ?? "")
+    .replaceAll("&","&amp;")
+    .replaceAll("<","&lt;")
+    .replaceAll(">","&gt;")
+    .replaceAll('"',"&quot;")
+    .replaceAll("'","&#039;");
+}
+
+/* =========================
+   ADMIN CRUD
+   ========================= */
+function clearForm(){
+  $("mId").value = "";
+  $("mName").value = "";
+  $("mPack").value = "";
+  $("mMrp").value = "";
+  $("mPrice").value = "";
+  $("mStock").value = "";
+  $("formTitle").textContent = "Medicine Details";
+  $("formSub").textContent = "Admins can add/edit medicines here.";
+}
+
+window.editItem = function(id){
+  if(!isAdmin()) return;
+  const item = inventory.find(x => x.id === id);
+  if(!item) return;
+
+  $("mId").value = item.id;
+  $("mName").value = item.name;
+  $("mPack").value = item.pack;
+  $("mMrp").value = item.mrp;
+  $("mPrice").value = item.price;
+  $("mStock").value = item.stock;
+
+  $("formTitle").textContent = "Edit Medicine";
+  $("formSub").textContent = "Update stock, price, and MRP then Save.";
+}
+
+window.deleteItem = function(id){
+  if(!isAdmin()) return;
+  const item = inventory.find(x => x.id === id);
+  if(!item) return;
+
+  const ok = confirm("Delete this medicine?\n\n" + item.name);
+  if(!ok) return;
+
+  inventory = inventory.filter(x => x.id !== id);
+  saveInventory(inventory);
+  renderInventory();
+  clearForm();
+  showAlert($("invAlert"), "Deleted successfully.", "ok");
+}
+
+function addNew(){
+  if(!isAdmin()) return;
+  clearForm();
+  $("formTitle").textContent = "Add New Medicine";
+  $("formSub").textContent = "Fill details and click Save.";
+}
+
+/* =========================
+   IMPORT / EXPORT
+   ========================= */
+function exportJSON(){
+  const blob = new Blob([JSON.stringify(inventory, null, 2)], {type:"application/json"});
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement("a");
+  a.href = url;
+  a.download = "inventory.json";
+  document.body.appendChild(a);
+  a.click();
+  a.remove();
+  URL.revokeObjectURL(url);
+  showAlert($("invAlert"), "Exported inventory.json", "ok");
+}
+
+function importJSON(){
+  const inp = document.createElement("input");
+  inp.type = "file";
+  inp.accept = ".json,application/json";
+  inp.onchange = () => {
+    const file = inp.files && inp.files[0];
+    if(!file) return;
+
+    const reader = new FileReader();
+    reader.onload = () => {
+      try{
+        const data = JSON.parse(reader.result);
+        if(!Array.isArray(data)) throw new Error("Invalid JSON");
+
+        // Normalize and ensure IDs
+        inventory = data.map(x => ({
+          id: x.id || uid(),
+          name: String(x.name || ""),
+          pack: String(x.pack || ""),
+          mrp: Number(x.mrp || 0),
+          price: Number(x.price || 0),
+          stock: Number(x.stock || 0),
+        }));
+
+        saveInventory(inventory);
+        renderInventory();
+        showAlert($("invAlert"), "Imported successfully.", "ok");
+      }catch(e){
+        showAlert($("invAlert"), "Import failed: invalid JSON format.", "bad");
+      }
+    };
+    reader.readAsText(file);
+  };
+  inp.click();
+}
+
+/* =========================
+   EVENTS
+   ========================= */
+$("tabUser").addEventListener("click", () => {
+  setActiveTab($("tabUser"));
+  showPanel("user");
+});
+$("tabAdmin").addEventListener("click", () => {
+  setActiveTab($("tabAdmin"));
+  showPanel("admin");
+});
+$("tabInventory").addEventListener("click", () => {
+  setActiveTab($("tabInventory"));
+  showPanel("inventory");
+  renderInventory();
+});
+
+$("btnUserLogin").addEventListener("click", () => {
+  const email = ($("uEmail").value || "").trim();
+  const name = ($("uName").value || "").trim();
+  const phone = ($("uPhone").value || "").trim();
+
+  const phoneOk = /^[0-9]{10}$/.test(phone);
+  const emailOk = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+
+  if(!emailOk) return showAlert($("userAlert"), "Enter a valid email.", "bad");
+  if(name.length < 2) return showAlert($("userAlert"), "Enter your name.", "bad");
+  if(!phoneOk) return showAlert($("userAlert"), "Enter valid 10-digit phone.", "bad");
+
+  setSession({ role:"user", email, name, phone, ts: Date.now() });
+  showAlert($("userAlert"), "User login successful.", "ok");
+});
+
+$("btnUserLogout").addEventListener("click", () => {
+  clearSession();
+  showAlert($("userAlert"), "Logged out.", "ok");
+});
+
+$("btnGoInventoryFromUser").addEventListener("click", () => {
+  if(!(isUser() || isAdmin())) return showAlert($("userAlert"), "Please login first.", "bad");
+  setActiveTab($("tabInventory"));
+  showPanel("inventory");
+  renderInventory();
+});
+
+$("btnAdminLogin").addEventListener("click", () => {
+  const email = ($("aEmail").value || "").trim();
+  const pass = ($("aPass").value || "").trim();
+
+  if(email === CONFIG.adminEmail && pass === CONFIG.adminPassword){
+    setSession({ role:"admin", email, ts: Date.now() });
+    showAlert($("adminAlert"), "Admin login successful.", "ok");
+  }else{
+    showAlert($("adminAlert"), "Invalid admin credentials.", "bad");
+  }
+});
+
+$("btnAdminLogout").addEventListener("click", () => {
+  clearSession();
+  showAlert($("adminAlert"), "Logged out.", "ok");
+});
+
+$("btnGoInventoryFromAdmin").addEventListener("click", () => {
+  if(!isAdmin()) return showAlert($("adminAlert"), "Admin login required.", "bad");
+  setActiveTab($("tabInventory"));
+  showPanel("inventory");
+  renderInventory();
+});
+
+$("btnAddNew").addEventListener("click", addNew);
+
+$("btnSave").addEventListener("click", () => {
+  if(!isAdmin()) return;
+
+  const id = ($("mId").value || "").trim();
+  const name = ($("mName").value || "").trim();
+  const pack = ($("mPack").value || "").trim();
+  const mrp = Number(($("mMrp").value || "").trim());
+  const price = Number(($("mPrice").value || "").trim());
+  const stock = Number(($("mStock").value || "").trim());
+
+  if(name.length < 2) return showAlert($("formAlert"), "Enter medicine name.", "bad");
+  if(pack.length < 1) return showAlert($("formAlert"), "Enter pack/strength.", "bad");
+  if(isNaN(mrp) || mrp < 0) return showAlert($("formAlert"), "Enter valid MRP.", "bad");
+  if(isNaN(price) || price < 0) return showAlert($("formAlert"), "Enter valid Price.", "bad");
+  if(isNaN(stock) || stock < 0) return showAlert($("formAlert"), "Enter valid Stock.", "bad");
+
+  if(id){
+    // update
+    const idx = inventory.findIndex(x => x.id === id);
+    if(idx >= 0){
+      inventory[idx] = { ...inventory[idx], name, pack, mrp, price, stock };
+      saveInventory(inventory);
+      renderInventory();
+      showAlert($("formAlert"), "Updated successfully.", "ok");
+      showAlert($("invAlert"), "Inventory updated.", "ok");
+    }
+  }else{
+    // add
+    const item = { id: uid(), name, pack, mrp, price, stock };
+    inventory.unshift(item);
+    saveInventory(inventory);
+    renderInventory();
+    showAlert($("formAlert"), "Added successfully.", "ok");
+    showAlert($("invAlert"), "New medicine added.", "ok");
+  }
+});
+
+$("btnClear").addEventListener("click", () => clearForm());
+
+$("btnExport").addEventListener("click", exportJSON);
+$("btnImport").addEventListener("click", importJSON);
+
+$("btnReset").addEventListener("click", () => {
+  if(!isAdmin()) return;
+  const ok = confirm("Reset inventory to demo data?");
+  if(!ok) return;
+  inventory = demoData();
+  saveInventory(inventory);
+  renderInventory();
+  clearForm();
+  showAlert($("invAlert"), "Reset done.", "ok");
+});
+
+$("searchBox").addEventListener("input", renderInventory);
+$("stockFilter").addEventListener("change", renderInventory);
+
+/* =========================
+   INIT
+   ========================= */
+$("yr").textContent = new Date().getFullYear();
+updateSessionPill();
+syncRoleUI();
+clearForm();
 </script>
-
 </body>
 </html>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
