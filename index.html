@@ -157,41 +157,6 @@
   line-height: 1.7;
 }
 
-
-/* === Contact Us Background Image (Transparent) === */
-#contact{
-  position: relative;
-  overflow: hidden;
-}
-
-/* Background image layer */
-#contact::before{
-  content: "";
-  position: absolute;
-  inset: 0;
-  background-image: url("assets/images/contact-bg-2400.png");
-  background-size: cover;
-  background-position: center;
-  background-repeat: no-repeat;
-  opacity: 0.15;
-  z-index: 0;
-}
-
-/* Brand color overlay */
-#contact::after{
-  content: "";
-  position: absolute;
-  inset: 0;
-  background: rgba(17,121,154,0.12);
-  z-index: 0;
-}
-
-/* Keep content above background */
-#contact > *{
-  position: relative;
-  z-index: 1;
-}
-
 </style>
 <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet"/></head>
 <body>
