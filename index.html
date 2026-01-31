@@ -254,7 +254,6 @@
     background: rgba(255,255,255,0.70); /* slightly stronger on mobile */
   }
   #about-us.bg-section{ min-height: auto; }
-}
 .vision-mission{
   background: url("assets/images/vision-mission-bg.png") center/cover no-repeat;
   padding: 80px 40px;
@@ -265,9 +264,20 @@
   margin: auto;
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 40px;
+  gap: 60px;
 }
-    
+
+.vm-box{
+  color: #fff;
+  text-align: left;   /* 🔑 THIS fixes the issue */
+}
+
+.vm-title{
+  margin-bottom: 15px;
+  font-size: 26px;
+  font-weight: 600;
+}
+
 </style>
 <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet"/></head>
 <body>
