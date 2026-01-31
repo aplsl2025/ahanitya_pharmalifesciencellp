@@ -621,7 +621,7 @@ h1, h2, h3, h4, h5, h6{
 <div class="card">
 <h3>X-Ray at Your Home</h3>
 <p>Book X-ray at your home with Ahanitya Pharma Life Science</p>
-<button class="btn" id="openBooking">Book Now</button>
+<a class="btn" href="book-now.html" target="_blank" rel="noopener">Book Now</a>
 </div>
 </div>
 
@@ -687,119 +687,9 @@ h1, h2, h3, h4, h5, h6{
 </div>
 </div>
 
-<style>
-  :root{
-    --brand:#11799a; --bg:#f5f7fa; --text:#1f2937; --muted:#6b7280;
-    --card:#ffffff; --ring:rgba(20,83,45,.15);
-  }
-  html { scroll-behavior: smooth; }
 
-  .card{
-    background:var(--card);
-    border:1px solid #e5e7eb;
-    border-radius:16px;
-    padding:18px;
-    box-shadow:0 6px 20px rgba(0,0,0,.06);
-    max-width:640px;
-  }
-  .card h3{ margin:0 0 8px; color:var(--brand); }
-  .card p{ margin:0 0 14px; color:var(--text); }
-  .btn{
-    display:inline-flex; align-items:center; justify-content:center;
-    padding:10px 16px; border-radius:999px; border:0;
-    background:var(--brand); color:#fff; font-weight:600; cursor:pointer;
-    box-shadow:0 6px 16px var(--ring); transition:transform .05s ease;
-  }
-  .btn:active{ transform:translateY(1px); }
-  .btn.btn--ghost{
-    background:#fff; color:var(--brand); border:1px solid #d1d5db;
-  }
 
-  .modal{ position:fixed; inset:0; display:none; }
-  .modal[aria-hidden="false"]{ display:block; }
-  .modal__overlay{
-    position:absolute; inset:0; background:rgba(0,0,0,.45);
-  }
-  .modal__content{
-    position:relative;
-    max-width:560px; width:calc(100% - 24px);
-    margin:4vh auto; background:#fff; border-radius:20px;
-    padding:20px 18px; box-shadow:0 10px 30px rgba(0,0,0,.2);
-    max-height:92vh;
-    overflow-y:auto;
-    -webkit-overflow-scrolling:touch;
-  }
-  .modal__close{
-    position:absolute; top:10px; right:12px; font-size:22px;
-    width:36px; height:36px; line-height:36px; text-align:center;
-    border-radius:999px; border:0; background:#f3f4f6; cursor:pointer;
-  }
 
-  body.modal-open { overflow:hidden; }
-
-  .form{ display:grid; gap:12px; margin-top:8px; }
-  .form label{ display:grid; gap:6px; font-weight:600; color:var(--text); }
-  .form input, .form textarea, .form select{
-    width:100%; padding:10px 12px; border-radius:10px;
-    border:1px solid #d1d5db; outline:none; background:#fff; color:var(--text);
-  }
-  .form input:focus, .form textarea:focus, .form select:focus{
-    border-color:var(--brand); box-shadow:0 0 0 4px var(--ring);
-  }
-  .actions{ display:flex; gap:10px; justify-content:flex-end; margin-top:8px; }
-
-  @media (max-width:480px){
-    .modal__content{ margin:6vh auto; padding:18px 14px; }
-  }
-</style>
-
-<script>
-  (function(){
-    const openBtn = document.getElementById('openBooking');
-    const modal = document.getElementById('bookingModal');
-    const closeOverlay = document.getElementById('closeBooking');
-    const cancelBtn = document.getElementById('cancelBooking');
-    const xClose = document.getElementById('xClose');
-
-    function openModal(){
-      modal.setAttribute('aria-hidden','false');
-      document.body.classList.add('modal-open');
-      const first = modal.querySelector('input, select, textarea, button');
-      if(first) setTimeout(()=> first.focus(), 50);
-      document.addEventListener('keydown', escClose);
-    }
-    function closeModal(){
-      modal.setAttribute('aria-hidden','true');
-      document.body.classList.remove('modal-open');
-      document.removeEventListener('keydown', escClose);
-      openBtn && openBtn.focus();
-    }
-    function escClose(e){ if(e.key === 'Escape') closeModal(); }
-
-    openBtn && openBtn.addEventListener('click', openModal);
-    closeOverlay && closeOverlay.addEventListener('click', closeModal);
-    cancelBtn && cancelBtn.addEventListener('click', closeModal);
-    xClose && xClose.addEventListener('click', closeModal);
-
-    const dateInput = document.getElementById("appointment_date");
-    if (dateInput) {
-      const today = new Date();
-      const yyyy = today.getFullYear();
-      const mm = String(today.getMonth() + 1).padStart(2,'0');
-      const dd = String(today.getDate()).padStart(2,'0');
-      dateInput.setAttribute('min', `${yyyy}-${mm}-${dd}`);
-    }
-  })();
-
-  function validateServiceArea() {
-    const address = document.getElementById('address').value.toLowerCase();
-    if (!address.includes('ahmedabad')) {
-      alert('Sorry, our service is currently available only in Ahmedabad.');
-      return false;
-    }
-    return true;
-  }
-</script>
     <div class="services-container">
 <div class="service-item">
 <p><strong>• Distribution:</strong> From life-saving medicines to critical care solutions, we ensure global reach through an extensive supply chain network. 
