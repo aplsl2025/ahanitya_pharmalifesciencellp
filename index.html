@@ -224,7 +224,7 @@
 #contact input,
 #contact select,
 #contact textarea{
-  background: rgba(255,255,255,0.15);*/15% 
+  background: rgba(255,255,255,0.15); /* 15% */
 }
 
 /* Improve label readability on Contact section */
@@ -254,44 +254,39 @@
     background: rgba(255,255,255,0.70); /* slightly stronger on mobile */
   }
   #about-us.bg-section{ min-height: auto; }
-
-/* Vision & Mission section */
-.vision-section{
-  padding:80px 40px;
-  background:#ffffff;
 }
 
-.vm-parallel{
-  max-width:1000px;
-  margin:auto;
-  display:grid;
-  grid-template-columns:1fr 1fr;
-  gap:60px;
+/* ===== Vision & Mission – Parallel Columns (Calibri Bold Italic, #1D119A) ===== */
+.vision-section .vm-parallel{
+  max-width: 1000px;
+  margin: auto;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 60px;
 }
-
-.vm-col{
-  text-align:left;
-}
-
-.vm-col h2{
-  color:#1D119A;
+.vision-section .vm-col{ text-align: left; }
+.vision-section .vm-col h2{
+  color: #1D119A;
   font-family: Calibri, Arial, sans-serif;
-  font-weight:700;
+  font-weight: 700;
   font-style: italic;
-  font-size:30px;
-  margin-bottom:14px;
+  margin: 0 0 12px 0;
 }
-
-.vm-col p{
-  color:#1D119A;
+.vision-section .vm-col p{
+  color: #1D119A;
   font-family: Calibri, Arial, sans-serif;
-  font-weight:700;
+  font-weight: 700;
   font-style: italic;
-  font-size:18px;
-  line-height:1.7;}
-
-    
+  line-height: 1.7;
+  margin: 0;
 }
+@media (max-width: 768px){
+  .vision-section .vm-parallel{
+    grid-template-columns: 1fr;
+    gap: 35px;
+  }
+}
+
 </style>
 <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet"/></head>
 <body>
@@ -329,16 +324,16 @@
 
 <!-- Vision & Mission -->
 <section class="vision-section bg-section" style="background-image:url('assets/images/vision-mission-bg-2400x1350-150kb.jpg');">
- <div class="vm-parallel">
- <div class="vm-col">
-<h2>Our Vision</h2>
-<p><strong>To be a globally recognized leader in the pharmaceutical and life sciences industry, setting new benchmarks in research, manufacturing, and accessibility.</strong></p>
- </div> 
-<div class="vm-col">
-<h2>Our Mission</h2>
-<p><strong>To revolutionize healthcare by developing and delivering innovative pharmaceutical solutions that ensure safety, efficacy, and accessibility for all.</strong></p>
- </div>
- </div>
+  <div class="vm-parallel">
+    <div class="vm-col">
+      <h2>Our Vision</h2>
+      <p>To be a globally recognized leader in the pharmaceutical and life sciences industry, setting new benchmarks in research, manufacturing, and accessibility.</p>
+    </div>
+    <div class="vm-col">
+      <h2>Our Mission</h2>
+      <p>To revolutionize healthcare by developing and delivering innovative pharmaceutical solutions that ensure safety, efficacy, and accessibility for all.</p>
+    </div>
+  </div>
 </section>
 
 <!-- About Us -->
