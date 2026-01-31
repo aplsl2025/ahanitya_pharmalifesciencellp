@@ -715,13 +715,12 @@ h1, h2, h3, h4, h5, h6{
     background:#fff; color:var(--brand); border:1px solid #d1d5db;
   }
 
-  .modal{ position:fixed; inset:0; display:none; }
+  .modal{ position:fixed; inset:0; display:none; z-index:20000; }
   .modal[aria-hidden="false"]{ display:block; }
-  .modal__overlay{
-    position:absolute; inset:0; background:rgba(0,0,0,.45);
-  }
+  .modal__overlay{ position:absolute; inset:0; background:rgba(0,0,0,.45); z-index:20000; }
   .modal__content{
     position:relative;
+    z-index:20001;
     max-width:560px; width:calc(100% - 24px);
     margin:4vh auto; background:#fff; border-radius:20px;
     padding:20px 18px; box-shadow:0 10px 30px rgba(0,0,0,.2);
