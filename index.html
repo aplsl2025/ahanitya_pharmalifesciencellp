@@ -259,23 +259,30 @@
   padding: 80px 40px;
 }
 
-.vm-grid{
+.vision-mission{
+  padding: 60px 40px;
+}
+
+.vm-row{
   max-width: 1100px;
   margin: auto;
   display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 60px;
+  grid-template-columns: 1fr 1fr;   /* 🔑 parallel columns */
+  gap: 50px;
 }
 
-.vm-box{
-  color: #fff;
-  text-align: left;   /* 🔑 THIS fixes the issue */
+.vm-col{
+  text-align: left;
 }
 
-.vm-title{
-  margin-bottom: 15px;
-  font-size: 26px;
-  font-weight: 600;
+.vm-col h2{
+  margin-bottom: 12px;
+  font-size: 24px;
+}
+
+.vm-col p{
+  line-height: 1.6;
+  font-size: 16px;
 }
 
 </style>
@@ -315,12 +322,12 @@
 
 <!-- Vision & Mission -->
 <section class="vision-section bg-section" style="background-image:url('assets/images/vision-mission-bg-2400x1350-150kb.jpg');">
-<div class="vm-grid">
-<div class="vm-box">
+<div class="vm-row">
+<div class="vm-col">
 </div>
 <h2>Our Vision</h2>
 <p><strong>To be a globally recognized leader in the pharmaceutical and life sciences industry, setting new benchmarks in research, manufacturing, and accessibility.</strong></p>
-<div class="vm-box">
+<div class="vm-col">
 <h2>Our Mission</h2>
 <p><strong>To revolutionize healthcare by developing and delivering innovative pharmaceutical solutions that ensure safety, efficacy, and accessibility for all.</strong></p>
 </div>
