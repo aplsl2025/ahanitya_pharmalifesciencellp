@@ -353,14 +353,64 @@ h1, h2, h3, h4, h5, h6{
 
 
 
+    
+/* ===== Slider arrows ===== */
+.pg-arrow{
+  position:absolute;
+  top:50%;
+  transform:translateY(-50%);
+  background:rgba(0,0,0,0.55);
+  color:#fff;
+  border:0;
+  width:44px;
+  height:44px;
+  border-radius:50%;
+  cursor:pointer;
+  font-size:22px;
+  z-index:5;
+}
+.pg-prev{ left:10px; }
+.pg-next{ right:10px; }
+.pg-arrow:hover{ background:rgba(0,0,0,0.8); }
+
     /* ===== Autoplay slider synced with Product Gallery filters ===== */
     .pg-slider{max-width:1100px;margin:14px auto 6px;border-radius:16px;overflow:hidden;box-shadow:0 6px 18px rgba(0,0,0,.10);background:#ffffff;}
     .pg-slider-inner{position:relative;aspect-ratio: 1100/360;display:flex;align-items:center;justify-content:center;background:rgba(17,121,154,.06);}
     .pg-slider img{width:100%;height:100%;object-fit:contain;display:block;}
+
+    /* Arrows */
+    .pg-arrow{
+      position:absolute;
+      top:50%;
+      transform:translateY(-50%);
+      width:44px;height:44px;
+      border:0;
+      border-radius:999px;
+      background:rgba(0,0,0,0.55);
+      color:#ffffff;
+      font-size:22px;
+      line-height:44px;
+      text-align:center;
+      cursor:pointer;
+      z-index:2;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      box-shadow:0 6px 16px rgba(0,0,0,.18);
+    }
+    .pg-arrow:hover{ background:rgba(0,0,0,0.78); }
+    .pg-prev{ left:12px; }
+    .pg-next{ right:12px; }
+
     .pg-slider-caption{padding:10px 14px;font-size:.9rem;color:#11799a;text-align:center;font-weight:700;}
     @media (max-width:768px){
       .pg-slider-inner{aspect-ratio: 16/9;}
       .pg-slider img{object-fit:cover;}
+      .pg-arrow{ width:40px;height:40px;font-size:20px;line-height:40px; }
+      .pg-prev{ left:8px; }
+      .pg-next{ right:8px; }
+    }
+.pg-slider img{object-fit:cover;}
     }
 </style>
 <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet"/>
@@ -608,7 +658,10 @@ h1, h2, h3, h4, h5, h6{
 <h2 style="text-align:center; color:#11799a;">Product Gallery</h2>
 <p style="text-align:center; max-width:700px; margin:0 auto 10px; color:#555; font-size:0.95rem;">
     Filter by category to view multiple product images.
-  </p><div aria-label="Product gallery autoplay preview" class="pg-slider"><div class="pg-slider-inner"><img alt="Product preview" data-src="" decoding="async" fetchpriority="low" height="360" id="pgSliderImg" loading="lazy" src="data:image/gif;base64,R0lGODlhAQABAAAAACw=" width="1000"/></div><div class="pg-slider-caption">Auto preview (changes with filter)</div></div>
+  </p><div aria-label="Product gallery autoplay preview" class="pg-slider"><div class="pg-slider-inner">
+<button class="pg-arrow pg-prev" aria-label="Previous slide">&#10094;</button>
+<button class="pg-arrow pg-next" aria-label="Next slide">&#10095;</button>
+<img alt="Product preview" data-src="" decoding="async" fetchpriority="low" height="360" id="pgSliderImg" loading="lazy" src="data:image/gif;base64,R0lGODlhAQABAAAAACw=" width="1000"/></div><div class="pg-slider-caption">Auto preview (changes with filter)</div></div>
 <div class="pg-filter-bar">
 <button class="pg-btn active" data-category="all">All</button>
 <button class="pg-btn" data-category="medicines">Medicines (Rx &amp; OTC)</button>
@@ -1062,6 +1115,24 @@ document.getElementById("year").textContent = new Date().getFullYear();
       }
     });
   }
+
+
+  // Arrow controls
+  var prevBtn = sliderWrap ? sliderWrap.querySelector('.pg-prev') : null;
+  var nextBtn = sliderWrap ? sliderWrap.querySelector('.pg-next') : null;
+
+  function prevSlide(){
+    showSlide(sliderIdx - 1);
+    startSlider();
+  }
+  function nextSlide(){
+    showSlide(sliderIdx + 1);
+    startSlider();
+  }
+
+  if(prevBtn) prevBtn.addEventListener('click', function(e){ e.preventDefault(); e.stopPropagation(); prevSlide(); });
+  if(nextBtn) nextBtn.addEventListener('click', function(e){ e.preventDefault(); e.stopPropagation(); nextSlide(); });
+
 
   // Filter buttons
   buttons.forEach(function(btn){
