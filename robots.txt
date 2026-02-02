@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://aplsl2025.github.io/ahanitya_pharmalifesciencellp/sitemap.xml
