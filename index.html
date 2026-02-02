@@ -8,7 +8,7 @@
 <meta content="Wholesale, Branding, Distribution &amp; Supply of medicines, ayurvedic, injectables, medical equipment &amp; supplies." name="description"/>
 <meta content="index,follow,max-image-preview:large" name="robots"/>
 <meta content="#11799a" name="theme-color"/>
-<link href="https://aplsl2025.github.io/ahanitya_pharmalifesciencellp/" rel="canonical"/>
+<link href="https://aplsl2025.github.io/ahanitya_pharmalifesciencellp/" rel="canonical"/><link as_="image" fetchpriority="high" href="assets/images/hero-bg.png" rel="preload"/>
 <meta content="website" property="og:type"/>
 <meta content="Ahanitya Pharma Life Science LLP" property="og:site_name"/>
 <meta content="Ahanitya Pharma Life Science LLP" property="og:title"/>
@@ -351,8 +351,19 @@ h1, h2, h3, h4, h5, h6{
   color:rgba(29,17,154,0.7);
 }
 
+
+
+    /* ===== Autoplay slider synced with Product Gallery filters ===== */
+    .pg-slider{max-width:1100px;margin:14px auto 6px;border-radius:16px;overflow:hidden;box-shadow:0 6px 18px rgba(0,0,0,.10);background:#ffffff;}
+    .pg-slider-inner{position:relative;aspect-ratio: 1100/360;display:flex;align-items:center;justify-content:center;background:rgba(17,121,154,.06);}
+    .pg-slider img{width:100%;height:100%;object-fit:contain;display:block;}
+    .pg-slider-caption{padding:10px 14px;font-size:.9rem;color:#11799a;text-align:center;font-weight:700;}
+    @media (max-width:768px){
+      .pg-slider-inner{aspect-ratio: 16/9;}
+      .pg-slider img{object-fit:cover;}
+    }
 </style>
-<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet"/>
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
@@ -380,7 +391,7 @@ h1, h2, h3, h4, h5, h6{
   ]
 }
 </script>
-</link>  <meta name="google-site-verification" content="NzQydxfVSVQIm0BbZSSMKW8qcwVRHGWRlxNAV_qgX54" />
+<meta content="NzQydxfVSVQIm0BbZSSMKW8qcwVRHGWRlxNAV_qgX54" name="google-site-verification"/>
 </head>
 <body>
 <a class="skip-link" href="#main-content">Skip to main content</a>
@@ -597,7 +608,7 @@ h1, h2, h3, h4, h5, h6{
 <h2 style="text-align:center; color:#11799a;">Product Gallery</h2>
 <p style="text-align:center; max-width:700px; margin:0 auto 10px; color:#555; font-size:0.95rem;">
     Filter by category to view multiple product images.
-  </p>
+  </p><div aria-label="Product gallery autoplay preview" class="pg-slider"><div class="pg-slider-inner"><img alt="Product preview" data-src="" decoding="async" fetchpriority="low" height="360" id="pgSliderImg" loading="lazy" src="data:image/gif;base64,R0lGODlhAQABAAAAACw=" width="1000"/></div><div class="pg-slider-caption">Auto preview (changes with filter)</div></div>
 <div class="pg-filter-bar">
 <button class="pg-btn active" data-category="all">All</button>
 <button class="pg-btn" data-category="medicines">Medicines (Rx &amp; OTC)</button>
@@ -899,16 +910,16 @@ h1, h2, h3, h4, h5, h6{
 <textarea aria-label="Message" name="message" placeholder="Name your product and MoQ !" required="" rows="5"></textarea>
 <label for="attachment">Attach a file (PDF, DOC, DOCX, JPG, PNG, CSV, XLS, XLSX):</label>
 <input accept=".pdf,.doc,.docx,.jpg,.png,.csv,.xls,.xlsx" id="attachment" name="attachment" type="file"/>
-<input name="_subject" type="hidden" value="New Contact Form Submission - Ahanitya Pharma Life Science LLP">
-<input name="_template" type="hidden" value="table">
-<input name="_captcha" type="hidden" value="false">
+<input name="_subject" type="hidden" value="New Contact Form Submission - Ahanitya Pharma Life Science LLP"/>
+<input name="_template" type="hidden" value="table"/>
+<input name="_captcha" type="hidden" value="false"/>
 <button type="submit">Send Message</button>
 <p>Thank you for considering <strong>Ahanitya Pharma Life Science LLP</strong> as your partner in healthcare excellence. We look forward to working together to create a healthier future for all.</p>
 <div class="Address">
 <h2>Registered Address</h2>
 <p> 2,1437/1/1 Ambika Estate, Rakanpur Chokadi, Kalol, Gandhi Nagar, Kalol, Gujarat, India, 382721</p>
 </div>
-</input></input></input></form>
+</form>
 </section>
 </main>
 <footer class="footer">
@@ -969,30 +980,103 @@ h1, h2, h3, h4, h5, h6{
 <script>
 document.getElementById("year").textContent = new Date().getFullYear();
 </script>
-<script>
-  (function(){
-    var gallery = document.getElementById('product-gallery');
-    if (!gallery) return;
-    var buttons = gallery.querySelectorAll('.pg-btn');
-    var items = gallery.querySelectorAll('.pg-item');
+<script>(function(){
+  var gallery = document.getElementById('product-gallery');
+  if (!gallery) return;
 
-    buttons.forEach(function(btn){
-      btn.addEventListener('click', function(){
-        var category = btn.getAttribute('data-category');
-        buttons.forEach(function(b){ b.classList.remove('active'); });
-        btn.classList.add('active');
-        items.forEach(function(item){
-          var itemCat = item.getAttribute('data-category');
-          if (category === 'all' || itemCat === category){
-            item.style.display = '';
-          } else {
-            item.style.display = 'none';
-          }
-        });
-      });
+  var buttons = gallery.querySelectorAll('.pg-btn');
+  var items   = gallery.querySelectorAll('.pg-item');
+
+  // --- Slider (synced with active filter) ---
+  var sliderImg  = document.getElementById('pgSliderImg');
+  var sliderWrap = sliderImg ? sliderImg.closest('.pg-slider') : null;
+  var sliderList = [];
+  var sliderIdx  = 0;
+  var sliderTimer = null;
+
+  function applyFilter(category){
+    items.forEach(function(item){
+      var itemCat = item.getAttribute('data-category');
+      if (category === 'all' || itemCat === category){
+        item.style.display = '';
+      } else {
+        item.style.display = 'none';
+      }
     });
-  })();
-</script>
+  }
+
+  function buildSliderList(category){
+    sliderList = [];
+    items.forEach(function(item){
+      var itemCat = item.getAttribute('data-category');
+      if (category === 'all' || itemCat === category){
+        var im = item.querySelector('img');
+        if (im && im.getAttribute('src')) sliderList.push(im.getAttribute('src'));
+      }
+    });
+  }
+
+  function showSlide(i){
+    if (!sliderImg || !sliderList.length) return;
+    sliderIdx = (i + sliderList.length) % sliderList.length;
+    var src = sliderList[sliderIdx];
+    // Avoid setting placeholder data URI again
+    if (src && sliderImg.src !== src) sliderImg.src = src;
+  }
+
+  function stopSlider(){
+    if (sliderTimer){ clearInterval(sliderTimer); sliderTimer = null; }
+  }
+
+  function startSlider(){
+    stopSlider();
+    if (!sliderImg || sliderList.length < 2) return;
+    sliderTimer = setInterval(function(){ showSlide(sliderIdx + 1); }, 2500);
+  }
+
+  function setActiveButton(btn){
+    buttons.forEach(function(b){ b.classList.remove('active'); });
+    btn.classList.add('active');
+  }
+
+  // Init using current active filter (default: all)
+  var activeBtn = gallery.querySelector('.pg-btn.active') || buttons[0];
+  var activeCat = activeBtn ? activeBtn.getAttribute('data-category') : 'all';
+  buildSliderList(activeCat);
+  showSlide(0);
+  startSlider();
+
+  // Pause on hover, resume on leave
+  if (sliderWrap){
+    sliderWrap.addEventListener('mouseenter', stopSlider, {passive:true});
+    sliderWrap.addEventListener('mouseleave', startSlider, {passive:true});
+
+    // Click to open lightbox (if present)
+    sliderWrap.addEventListener('click', function(){
+      var lightbox = document.getElementById('imgLightbox');
+      var lightboxImg = document.getElementById('lightboxImg');
+      if (lightbox && lightboxImg && sliderImg && sliderImg.src && !sliderImg.src.startsWith('data:')){
+        lightboxImg.src = sliderImg.src;
+        lightbox.style.display = 'flex';
+        document.body.style.overflow = 'hidden';
+      }
+    });
+  }
+
+  // Filter buttons
+  buttons.forEach(function(btn){
+    btn.addEventListener('click', function(){
+      var category = btn.getAttribute('data-category') || 'all';
+      setActiveButton(btn);
+      applyFilter(category);
+
+      // Sync slider list to selected category
+      buildSliderList(category);
+      showSlide(0);
+      startSlider();
+    });
+  });
+})();</script>
 <!-- ✅ IMAGE LIGHTBOX (AUTO for all gallery images) -->
 <div id="imgLightbox" style="
   display:none;
