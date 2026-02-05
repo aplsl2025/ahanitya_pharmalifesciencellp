@@ -434,6 +434,34 @@ h1, h2, h3, h4, h5, h6{
     }
 .pg-slider img{object-fit:cover;}
     }
+
+
+/* ===== Product Preview Corner Badge (Top-Right, 45°) ===== */
+#our-products, #products, #product-preview, #product-review, #product-gallery,
+.product-preview, .product-review, .products, .product-section{
+  position: relative;
+  overflow: hidden;
+}
+.product-badge{
+  position:absolute;
+  top:-20px;
+  right:-20px;
+  width:160px;
+  height:auto;
+  transform: rotate(45deg);
+  transform-origin: top right;
+  z-index: 10;
+  pointer-events:none;
+  filter: drop-shadow(0 8px 14px rgba(0,0,0,0.25));
+}
+@media (max-width: 768px){
+  .product-badge{
+    width:120px;
+    top:-15px;
+    right:-15px;
+  }
+}
+
 </style>
 <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet"/>
 <script type="application/ld+json">
@@ -518,6 +546,8 @@ h1, h2, h3, h4, h5, h6{
 </section>
 <!-- Products -->
 <section id="our-products">
+  <img class="product-badge" src="assets/images/APLSL%20TRUSTED%20PARTNER.png" alt="APLSL – Trusted Partner in Healthcare" loading="lazy" decoding="async"/>
+
 <h2>Our Products</h2>
 <div class="cards">
 <div class="card">
