@@ -557,7 +557,7 @@ body:not([data-theme="dark"]) td{
         customer_phone: $("custPhone").value.trim(),
         receiver_email: RECEIVER_EMAIL,
         items,
-        business_type: $("custBusiness") ? $("custBusiness").value.trim() : "",
+        business_type: $("custBusiness") ? ($("custBusiness").options[$("custBusiness").selectedIndex]?.text || $("custBusiness").value || "").trim() : "",
         referred_by: $("referredFlag") ? $("referredFlag").value : "No",
         referrer_name: $("referrerName") ? $("referrerName").value.trim() : "",
         referrer_designation: $("referrerDesignation") ? $("referrerDesignation").value.trim() : "",
@@ -570,20 +570,23 @@ body:not([data-theme="dark"]) td{
         return;
       }
 
-const selectedBusiness = payload.business_type;
-const presFile = document.getElementById("custPrescription")?.files?.[0];
+const selectedBusinessRaw = payload.business_type || "";
+const selectedBusiness = (selectedBusinessRaw || "").toString().trim().toLowerCase();
+const presFile = document.getElementById("custPrescription")?.files?.[0] || null;
 
 // Customer: prescription is mandatory
-if (selectedBusiness === "Customer" && !presFile) {
+if (selectedBusiness === "customer" && !presFile) {
   $("orderStatus").textContent = "Prescription upload is required for Customer orders.";
   $("orderStatus").className = "status err";
   return;
 }
 
-// Store prescription meta (EmailJS will attach the file via sendForm)
+// Store prescription meta (FormSubmit will attach file via multipart form)
 payload.prescription_file_name = presFile ? presFile.name : "";
+
 // Fill hidden prescription meta for FormSubmit email
-document.getElementById("prescription_status").value = (selectedBusiness === "Customer" && presFile) ? "Attached" : "Not Provided";
+document.getElementById("prescription_status").value =
+  (selectedBusiness === "customer" && presFile) ? "Attached" : "Not Provided";
 document.getElementById("prescription_file_name").value = presFile ? presFile.name : "";
 
 
@@ -612,15 +615,33 @@ document.getElementById("prescription_file_name").value = presFile ? presFile.na
     // Init page
     renderMedicineRows();
 
-// Show prescription upload ONLY for Customer category
+// Show prescription upload ONLY for Customer category (robust to spacing/case)
 const custBusiness = document.getElementById("custBusiness");
 const prescriptionUpload = document.getElementById("prescriptionUpload");
-if (custBusiness && prescriptionUpload) {
-  custBusiness.addEventListener("change", () => {
-    prescriptionUpload.style.display = (custBusiness.value === "Customer") ? "block" : "none";
-  });
+const custPrescription = document.getElementById("custPrescription");
+
+function normalize(v){ return (v || "").toString().trim().toLowerCase(); }
+
+function getBusinessTypeNormalized(){
+  if (!custBusiness) return "";
+  // Prefer value, but fallback to selected option text
+  const v = normalize(custBusiness.value);
+  if (v) return v;
+  const optText = custBusiness.options?.[custBusiness.selectedIndex]?.text || "";
+  return normalize(optText);
+}
+
+function togglePrescription(){
+  const bt = getBusinessTypeNormalized();
+  const isCustomer = (bt === "customer");
+  if (prescriptionUpload) prescriptionUpload.style.display = isCustomer ? "block" : "none";
+  if (custPrescription) custPrescription.required = isCustomer;
+}
+
+if (custBusiness) {
+  custBusiness.addEventListener("change", togglePrescription);
   // initial
-  prescriptionUpload.style.display = (custBusiness.value === "Customer") ? "block" : "none";
+  togglePrescription();
 }
 
     // Top submit button triggers same action
@@ -771,8 +792,8 @@ if (custBusiness && prescriptionUpload) {
             <option>Retailer</option>
             <option>W/R</option>
             <option>Hospital</option>
-            <option>Hospital Supplies</option>
-            <option value="Customer">Customer</option>
+            <option value="hospital_supplies">Hospital Supplies</option>
+            <option value="customer">Customer</option>
           </select>
         </div>
         <div>
@@ -798,7 +819,7 @@ if (custBusiness && prescriptionUpload) {
 
         <div id="prescriptionUpload" style="display:none;">
           <label>Attach Prescription Copy (Customer only)</label>
-          <input type="file" id="custPrescription" accept=".jpg,.jpeg,.png,.pdf" / name="prescription_file" />
+          <input type="file" id="custPrescription" accept=".jpg,.jpeg,.png,.pdf" name="prescription_file" />
           <div class="muted">Upload prescription image or PDF (recommended ≤ 5MB). A link will be sent on WhatsApp.</div>
         </div>
       </div>
