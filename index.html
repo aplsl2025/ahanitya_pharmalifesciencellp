@@ -357,13 +357,15 @@ body:not([data-theme="dark"]) td{
 
 
 </style>
-  <!-- FormSubmit.co is used for email sending -->
-<!-- Firebase (Auth) -->
+
+  <!-- EmailJS -->
+  <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+
+  <!-- Firebase (Auth) -->
   <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.5/firebase-app.js";
     import { getAuth, onAuthStateChanged, signInWithEmailAndPassword, createUserWithEmailAndPassword, signOut } 
       from "https://www.gstatic.com/firebasejs/10.12.5/firebase-auth.js";
-
 
     // ✅ 1) PUT YOUR FIREBASE CONFIG HERE
     const firebaseConfig = {
@@ -380,12 +382,14 @@ body:not([data-theme="dark"]) td{
 
     // Fixed receiver + WhatsApp
     const RECEIVER_EMAIL = "infoahanityapharmalifescellp@gmail.com";
-    const WHATSAPP_NUMBER = "918487090212"; // +91 84870 90212 (no +)
+    const WHATSAPP_NUMBER = "918487090212"; // +91 8487090212 (no +)
 
     // ---------- Init ----------
     const app = initializeApp(firebaseConfig);
     const auth = getAuth(app);
-// ---------- UI Helpers ----------
+    emailjs.init({ publicKey: EMAILJS_PUBLIC_KEY });
+
+    // ---------- UI Helpers ----------
     const $ = (id) => document.getElementById(id);
     const show = (el) => el.classList.remove("hide");
     const hide = (el) => el.classList.add("hide");
@@ -463,7 +467,6 @@ body:not([data-theme="dark"]) td{
       return items;
     }
 
-
     function buildOrderText(payload) {
       const lines = [];
       lines.push("📦 *Ahanitya Order*");
@@ -473,10 +476,6 @@ body:not([data-theme="dark"]) td{
       lines.push(`📧 Email: ${payload.customer_email}`);
       lines.push(`📞 Contact: ${payload.customer_phone}`);
       lines.push(`🏢 Business Type: ${payload.business_type || ""}`);
-      if (payload.prescription_file_name) {
-        lines.push(`🧾 Prescription: Attached in Email (${payload.prescription_file_name})`);
-        lines.push(`📌 WhatsApp note: Please attach the same prescription manually if required.`);
-      }
       lines.push(`👥 Referred By: ${payload.referred_by}`);
       if (payload.referred_by === "Yes") {
         lines.push(`🙍 Referrer Name: ${payload.referrer_name}`);
@@ -557,7 +556,7 @@ body:not([data-theme="dark"]) td{
         customer_phone: $("custPhone").value.trim(),
         receiver_email: RECEIVER_EMAIL,
         items,
-        business_type: $("custBusiness") ? ($("custBusiness").options[$("custBusiness").selectedIndex]?.text || $("custBusiness").value || "").trim() : "",
+        business_type: $("custBusiness") ? $("custBusiness").value.trim() : "",
         referred_by: $("referredFlag") ? $("referredFlag").value : "No",
         referrer_name: $("referrerName") ? $("referrerName").value.trim() : "",
         referrer_designation: $("referrerDesignation") ? $("referrerDesignation").value.trim() : "",
@@ -570,79 +569,41 @@ body:not([data-theme="dark"]) td{
         return;
       }
 
-const selectedBusinessRaw = payload.business_type || "";
-const selectedBusiness = (selectedBusinessRaw || "").toString().trim().toLowerCase();
-const presFile = document.getElementById("custPrescription")?.files?.[0] || null;
-
-// Customer: prescription is mandatory
-if (selectedBusiness === "customer" && !presFile) {
-  $("orderStatus").textContent = "Prescription upload is required for Customer orders.";
-  $("orderStatus").className = "status err";
-  return;
-}
-
-// Store prescription meta (FormSubmit will attach file via multipart form)
-payload.prescription_file_name = presFile ? presFile.name : "";
-
-// Fill hidden prescription meta for FormSubmit email
-document.getElementById("prescription_status").value =
-  (selectedBusiness === "customer" && presFile) ? "Attached" : "Not Provided";
-document.getElementById("prescription_file_name").value = presFile ? presFile.name : "";
-
-
       const orderText = buildOrderText(payload);
-      // 1) Send Email via FormSubmit (standard form submit)
-      // Fill hidden template fields
-      const oid = "ORD-" + Date.now();
-      document.getElementById("order_id").value = oid;
-      document.getElementById("order_date").value = new Date().toLocaleString();
-      document.getElementById("referred").value = payload.referred_by || "";
 
-      // Write order text into hidden textarea (so it reaches FormSubmit email)
-      document.getElementById("order_details").value = orderText;
+      // 1) Send Email via EmailJS
+      try {
+        await emailjs.send(EMAILJS_SERVICE_ID, EMAILJS_TEMPLATE_ID, {
+          // IMPORTANT: Your EmailJS template "To Email" should be set to {{to_email}} OR fixed to the receiver.
+          // We pass to_email here to avoid "recipient address is empty".
+          to_email: RECEIVER_EMAIL,
 
-      // 2) Open WhatsApp with prefilled message (file cannot be auto-attached by browser)
-      const waUrl = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(orderText)}`;
-      window.open(waUrl, "_blank", "noopener,noreferrer");
+          // These keys MUST match your EmailJS template variables like:
+          // {{customer_name}}, {{customer_email}}, {{customer_phone}}, {{customer_address}}, {{order_details}}
+          customer_name: payload.customer_name,
+          customer_email: payload.customer_email,
+          customer_phone: payload.customer_phone,
+          customer_address: payload.customer_address,
+          order_details: orderText,
+          business_type: payload.business_type
+        });
 
-      // 3) Submit form to FormSubmit (email will be sent to infoahanityapharmalifescellp@gmail.com)
-      document.getElementById("orderForm").submit();
+        // 2) Open WhatsApp with prefilled message
+        const waUrl = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(orderText)}`;
+        window.open(waUrl, "_blank", "noopener,noreferrer");
 
-      $("orderStatus").textContent = "Order submitted ✅ Email sent (FormSubmit) + WhatsApp opened.";
-      $("orderStatus").className = "status ok";
-});
+        $("orderStatus").textContent = "Order submitted ✅ Email sent + WhatsApp opened.";
+        $("orderStatus").className = "status ok";
+
+      } catch (e) {
+        $("orderStatus").textContent = "Email sending failed: " + (e?.text || e?.message || "Unknown error") + " (check EmailJS service/template & Gmail permission).";
+        $("orderStatus").className = "status err";
+        console.error(e);
+      }
+    });
 
     // Init page
     renderMedicineRows();
-
-// Show prescription upload ONLY for Customer category (robust to spacing/case)
-const custBusiness = document.getElementById("custBusiness");
-const prescriptionUpload = document.getElementById("prescriptionUpload");
-const custPrescription = document.getElementById("custPrescription");
-
-function normalize(v){ return (v || "").toString().trim().toLowerCase(); }
-
-function getBusinessTypeNormalized(){
-  if (!custBusiness) return "";
-  // Prefer value, but fallback to selected option text
-  const v = normalize(custBusiness.value);
-  if (v) return v;
-  const optText = custBusiness.options?.[custBusiness.selectedIndex]?.text || "";
-  return normalize(optText);
-}
-
-function togglePrescription(){
-  const bt = getBusinessTypeNormalized();
-  const isCustomer = (bt === "customer");
-  if (prescriptionUpload) prescriptionUpload.style.display = isCustomer ? "block" : "none";
-  if (custPrescription) custPrescription.required = isCustomer;
-}
-
-if (custBusiness) {
-  custBusiness.addEventListener("change", togglePrescription);
-  // initial
-  togglePrescription();
-}
 
     // Top submit button triggers same action
     const btnSubmitTop = document.getElementById("btnSubmitTop");
@@ -662,13 +623,11 @@ if (custBusiness) {
         if (referredFlag.value === "Yes") {
           ref1.style.display = "block";
           ref2.style.display = "block";
-          const rf3 = document.getElementById("referrerFields3");
-          if (rf3) rf3.style.display = "block";
+          document.getElementById("referrerFields3").style ("display","block");
         } else {
           ref1.style.display = "none";
           ref2.style.display = "none";
-          const rf3b = document.getElementById("referrerFields3");
-          if (rf3b) rf3b.style.display = "none";
+          document.getElementById("referrerFields3").style ("display","none");
         }
       });
     }
@@ -754,36 +713,24 @@ if (custBusiness) {
 
     <!-- ORDER -->
     <div class="card hide" id="orderCard">
-      <form id="orderForm" action="https://formsubmit.co/infoahanityapharmalifescellp@gmail.com" method="POST" enctype="multipart/form-data">
-        <input type="hidden" name="to_email" id="to_email" value="infoahanityapharmalifescellp@gmail.com">
-        <input type="hidden" name="_subject" value="New Order – Ahanitya Online Order Portal">
-        <input type="hidden" name="_captcha" value="false">
-        <input type="hidden" name="_template" value="table">
-        <input type="hidden" name="order_id" id="order_id" value="">
-        <input type="hidden" name="order_date" id="order_date" value="">
-        <input type="hidden" name="referred" id="referred" value="">
-        <input type="hidden" name="prescription_status" id="prescription_status" value="Not Provided">
-        <input type="hidden" name="prescription_file_name" id="prescription_file_name" value="">
-        <textarea name="order_details" id="order_details" style="display:none"></textarea>
-
       <h2>Order Details</h2>
 
       <div class="grid grid-2">
         <div>
           <label>Name</label>
-          <input id="custName" type="text" placeholder="Full Name" name="customer_name" />
+          <input id="custName" type="text" placeholder="Full Name" />
         </div>
         <div>
           <label>Contact No</label>
-          <input id="custPhone" type="tel" placeholder="+91 XXXXX XXXXX" name="customer_phone" />
+          <input id="custPhone" type="tel" placeholder="+91 XXXXX XXXXX" />
         </div>
         <div>
           <label>Mail ID</label>
-          <input id="custEmail" type="email" placeholder="Customer email" name="customer_email" />
+          <input id="custEmail" type="email" placeholder="Customer email" />
         </div>
         <div>
           <label>Business Type</label>
-          <select id="custBusiness" name="business_type">
+          <select id="custBusiness">
             <option value="" selected disabled>Select business type</option>
             <option>Doctor</option>
             <option>Wholeseller</option>
@@ -791,36 +738,27 @@ if (custBusiness) {
             <option>Stockist</option>
             <option>Retailer</option>
             <option>W/R</option>
-            <option>Hospital</option>
-            <option value="hospital_supplies">Hospital Supplies</option>
-            <option value="customer">Customer</option>
           </select>
         </div>
         <div>
           <label>Referred By</label>
-          <select id="referredFlag" name="referred_by">
+          <select id="referredFlag">
             <option value="No" selected>No</option>
             <option value="Yes">Yes</option>
           </select>
         </div>
         <div id="referrerFields" style="display:none;">
           <label>Referrer Name</label>
-          <input id="referrerName" type="text" placeholder="Referrer full name" name="referrer_name" />
+          <input id="referrerName" type="text" placeholder="Referrer full name" />
         </div>
         <div id="referrerFields2" style="display:none;">
           <label>Referrer Designation</label>
-          <input id="referrerDesignation" type="text" placeholder="Doctor / MR / Distributor etc." name="referrer_designation" />
+          <input id="referrerDesignation" type="text" placeholder="Doctor / MR / Distributor etc." />
         </div>
 
         <div>
           <label>Address</label>
-          <input id="custAddress" type="text" placeholder="Full delivery address" name="customer_address" />
-        </div>
-
-        <div id="prescriptionUpload" style="display:none;">
-          <label>Attach Prescription Copy (Customer only)</label>
-          <input type="file" id="custPrescription" accept=".jpg,.jpeg,.png,.pdf" name="prescription_file" />
-          <div class="muted">Upload prescription image or PDF (recommended ≤ 5MB). A link will be sent on WhatsApp.</div>
+          <input id="custAddress" type="text" placeholder="Full delivery address" />
         </div>
       </div>
 
@@ -859,7 +797,7 @@ if (custBusiness) {
       <div class="status" id="orderStatus"></div>
 
       <div class="note" style="margin-top:12px">
-        Orders will be emailed to <b>infoahanityapharmalifescellp@gmail.com</b> and also shared on WhatsApp to <b>+91 84870 90212</b>.
+        Orders will be emailed to <b>infoahanityapharmalifescellp@gmail.com</b> and also shared on WhatsApp to <b>+91 8487090212</b>.
         <p><strong>*</strong>Orders placed on or before 13:00 hrs (1:00 PM) will be processed and delivered on the same day</p>
         <p><strong>*</strong>We accept and deliver orders on Sundays and public holidays as well. Same-day delivery applies for orders placed before 13:00 hrs, subject to availability.</p>
         <p><strong>*</strong>Emergency requirements may be accommodated on a priority basis (subject to availability).</p>
@@ -867,7 +805,6 @@ if (custBusiness) {
         <p><strong>*</strong>Order changes or cancellations must be communicated before dispatch confirmation.</p>
         
       </div>
-      </form>
     </div>
   </div>
 
